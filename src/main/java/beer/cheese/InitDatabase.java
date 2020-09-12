@@ -151,7 +151,7 @@ public class InitDatabase {
         post.setTags("life.share");
         post.setContent("hello this is a test bubble");
         post.setStarCount(10);
-        post.getImages().add(new Image("http://192.168.1.105/images/bubble/daisy.jpg"));
+        post.getImages().add(new Image(AppConstants.STATIC_SERVER_PREFIX + "/images/bubble/daisy.jpg"));
         Comment comment = new Comment();
         comment.setPost(post);
         comment.setCreatedAt(new Date());
