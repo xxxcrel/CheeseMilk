@@ -67,7 +67,7 @@ public class InitDatabase {
         testUser.setEmail("test@test.com");
         testUser.setBio("i'm tester");
         testUser.setEnabled(true);
-        testUser.setAvatarUrl(AppConstants.STATIC_SERVER_PREFIX + AppConstants.USER_AVATAR_PATH + "avatar.jpg");
+        testUser.setAvatarUrl(AppConstants.STATIC_SERVER_PREFIX + AppConstants.USER_AVATAR_PATH + "asset/avatar.jpg");
         testUser.setPassword(passwordEncoder.encode("tester"));
         testUser.setGender(1);
         userRepository.save(admin);
