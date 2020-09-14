@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -148,7 +149,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/user/posts", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<PostVO> getUserBubbleList(@CurrentUser User user, @PageableDefault Pageable pageable){
+    public Page<PostVO> getUserBubbleList(@CurrentUser User user, @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable){
         return postService.listPostsByCurrentUser(user, pageable);
     }
 
