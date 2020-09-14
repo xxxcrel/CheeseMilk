@@ -1,6 +1,7 @@
 package beer.cheese.service.impl;
 
 import beer.cheese.constant.AppConstants;
+import beer.cheese.exception.UploadFailureException;
 import beer.cheese.service.FileService;
 import beer.cheese.util.StreamUtils;
 import org.apache.commons.logging.Log;
@@ -28,12 +29,16 @@ public class JdkFileService implements FileService {
         String basePath = AppConstants.LOCAL_PATH;
         String mkdirPermissions = AppConstants.MKDIR_PERMISSIONS;
         boolean basePathExist = Files.exists(Paths.get(basePath));
-        if(!basePathExist){
+        if(basePathExist){
+            logger.error("Your system already exist the dir : " + basePath + ", please remove this dir to ensure this app is running");
+        }
+        else{
             logger.info("base path " + basePath +  " doesn't exist, try create");
             try {
                 Set<PosixFilePermission> permissions = PosixFilePermissions.fromString(mkdirPermissions);
                 FileAttribute<Set<PosixFilePermission>> attribute = PosixFilePermissions.asFileAttribute(permissions);
-                Files.createDirectories(Paths.get(basePath), attribute);
+                Files.createDirectories(Paths.get(basePath + AppConstants.USER_AVATAR_PATH), attribute);
+                Files.createDirectories(Paths.get(basePath + AppConstants.BUBBLE_IMAGE_PATH), attribute);
             }catch (IOException e){
                 if(e instanceof AccessDeniedException){
                     logger.warn("Access denied for create base path:" + basePath + ", you may be running  in a incorrect environment");
@@ -53,10 +58,14 @@ public class JdkFileService implements FileService {
             StreamUtils.copyStream(file.getInputStream(), out, 1024);
         }catch (IOException e){
             logger.info("upload failed");
-            e.printStackTrace();
+            if(e instanceof AccessDeniedException){
+                throw new UploadFailureException("access denied, may be you run program in a incorrect environment");
+            }
+            return false;
         }
-        logger.info("upload successfully");
+//        logger.info("upload successfully");
         return true;
     }
 
 }
+

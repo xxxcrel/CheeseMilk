@@ -3,11 +3,19 @@ package beer.cheese;
 import beer.cheese.constant.AppConstants;
 import beer.cheese.repository.*;
 import beer.cheese.model.entity.*;
+import beer.cheese.service.FileService;
+import beer.cheese.util.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 
 @Component
@@ -30,6 +38,10 @@ public class InitDatabase {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    @Qualifier("jdkFileService")
+    FileService fileService;
 
 
     @PostConstruct
@@ -67,11 +79,21 @@ public class InitDatabase {
         testUser.setEmail("test@test.com");
         testUser.setBio("i'm tester");
         testUser.setEnabled(true);
-        testUser.setAvatarUrl(AppConstants.STATIC_SERVER_PREFIX + AppConstants.USER_AVATAR_PATH + "asset/avatar.jpg");
+        testUser.setAvatarUrl(AppConstants.STATIC_SERVER_PREFIX + AppConstants.USER_AVATAR_PATH + "avatar.jpg");
         testUser.setPassword(passwordEncoder.encode("tester"));
         testUser.setGender(1);
         userRepository.save(admin);
         userRepository.save(testUser);
+
+        String userHome = System.getProperty("user.home");
+
+        try(BufferedOutputStream out = new BufferedOutputStream(Files.newOutputStream(Paths.get(AppConstants.LOCAL_PATH + AppConstants.USER_AVATAR_PATH + "avatar.jpg")));
+            BufferedInputStream in = new BufferedInputStream(Files.newInputStream(Paths.get(userHome + "IdeaProjects/CheeseMilk/asset/avatar.jpg")))
+        ){
+            StreamUtils.copyStream(in, out, 1024);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 
