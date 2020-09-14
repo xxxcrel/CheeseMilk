@@ -84,16 +84,6 @@ public class InitDatabase {
         testUser.setGender(1);
         userRepository.save(admin);
         userRepository.save(testUser);
-
-        String userHome = System.getProperty("user.home");
-
-        try(BufferedOutputStream out = new BufferedOutputStream(Files.newOutputStream(Paths.get(AppConstants.LOCAL_PATH + AppConstants.USER_AVATAR_PATH + "avatar.jpg")));
-            BufferedInputStream in = new BufferedInputStream(Files.newInputStream(Paths.get(userHome + "IdeaProjects/CheeseMilk/asset/avatar.jpg")))
-        ){
-            StreamUtils.copyStream(in, out, 1024);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
     }
 
 
