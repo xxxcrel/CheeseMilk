@@ -7,8 +7,11 @@ import beer.cheese.model.entity.User;
 import beer.cheese.view.vo.PostVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public interface PostService {
@@ -18,6 +21,8 @@ public interface PostService {
     Page<PostVO> listPostsByUsername(String username, Pageable pageable);
 
     Page<PostVO> listPostsByCategory(String category, Pageable pageable);
+
+    Page<PostVO> listPostsByCategory(String category, LocalDateTime before, Pageable pageable);
 
     PostVO getPostByPid(Long pid) throws NotFoundException;
 

@@ -3,6 +3,7 @@ package beer.cheese.model.builders;
 import beer.cheese.model.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class UserVOBuilder {
@@ -28,7 +29,7 @@ public class UserVOBuilder {
     private String studentAttr;
 
     @JsonFormat(pattern = "yy:mm:dd HH:mm:ss", timezone = "GMT+8")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @JsonFormat(pattern = "yy:mm:dd HH:mm:ss")
     private Date updatedAt;
@@ -49,7 +50,7 @@ public class UserVOBuilder {
                 .createdAt(user.getCreatedAt());
     }
 
-    public UserVOBuilder createdAt(Date createdAt){
+    public UserVOBuilder createdAt(LocalDateTime createdAt){
         this.createdAt = createdAt;
         return this;
     }

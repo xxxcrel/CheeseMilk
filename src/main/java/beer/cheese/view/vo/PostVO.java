@@ -3,6 +3,7 @@ package beer.cheese.view.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -16,8 +17,8 @@ public class PostVO {
     private String avatarUrl;
 
     @JsonProperty("created_at")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createdAt;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
 
     private String content;
 
@@ -31,7 +32,7 @@ public class PostVO {
     private String categoryName;
 
     @JsonProperty("star_count")
-    private Integer startCount;
+    private Integer starCount;
 
     @JsonProperty("comment_count")
     private Integer commentCount;
@@ -69,11 +70,11 @@ public class PostVO {
         this.avatarUrl = avatarUrl;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -101,12 +102,12 @@ public class PostVO {
         this.categoryName = categoryName;
     }
 
-    public Integer getStartCount() {
-        return startCount;
+    public Integer getStarCount() {
+        return starCount;
     }
 
-    public void setStartCount(Integer startCount) {
-        this.startCount = startCount;
+    public void setStarCount(Integer startCount) {
+        this.starCount = startCount;
     }
 
     public Integer getCommentCount() {

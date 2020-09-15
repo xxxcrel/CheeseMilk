@@ -16,6 +16,8 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 
 @Component
@@ -67,7 +69,7 @@ public class InitDatabase {
         admin.setBio("You know nothing");
         admin.setEmail("crelxc@gmail.com");
         admin.setGender(1);
-        admin.setCreatedAt(new Date());
+        admin.setCreatedAt(LocalDateTime.now());
         admin.setEnabled(true);
         admin.setLocation("0793");
         admin.setNickname("CrelDevi");
@@ -147,19 +149,19 @@ public class InitDatabase {
         User user = userRepository.findByUsername("tester").get();
         Category whiteWall = categoryRepository.findByCategoryName("WhiteWall").get();
         for(int i = 0; i < 10; ++i){
-            postRepository.save(generatePost(user, whiteWall));
+            postRepository.save(generatePost(user, whiteWall, i));
         }
         Category moments = categoryRepository.findByCategoryName("Moments").get();
         for(int i = 0; i < 10; ++i){
-            postRepository.save(generatePost(user, moments));
+            postRepository.save(generatePost(user, moments, i));
         }
     }
 
-    private Post generatePost(User user, Category category){
+    private Post generatePost(User user, Category category, int index){
         Post post = new Post();
         post.setCategory(category);
         post.setUser(user);
-        post.setCreatedAt(new Date());
+        post.setCreatedAt(LocalDateTime.now().plusMinutes(index * 10));
         post.setTags("life.share");
         post.setContent("hello this is a test bubble");
         post.setStarCount(10);

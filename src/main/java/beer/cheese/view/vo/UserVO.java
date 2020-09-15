@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class UserVO {
@@ -31,14 +33,14 @@ public class UserVO {
 
     private String bio;
 
-    private Date birth;
+    private LocalDateTime birth;
 
     @JsonProperty("student_attr")
     private String studentAttr;
 
     @JsonFormat(pattern = "yy:mm:dd HH:mm:ss", timezone = "GMT+8")
     @JsonProperty("created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @JsonFormat(pattern = "yy:mm:dd HH:mm:ss")
     @JsonProperty("updated_at")
@@ -102,12 +104,20 @@ public class UserVO {
         this.bio = bio;
     }
 
-    public Date getBirth() {
+    public LocalDateTime getBirth() {
         return birth;
     }
 
-    public void setBirth(Date birth) {
+    public void setBirth(LocalDateTime birth) {
         this.birth = birth;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Integer getGender() {
@@ -124,14 +134,6 @@ public class UserVO {
 
     public void setStudentAttr(String studentAttr) {
         this.studentAttr = studentAttr;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Date getUpdatedAt() {

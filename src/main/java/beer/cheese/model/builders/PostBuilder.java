@@ -3,6 +3,7 @@ package beer.cheese.model.builders;
 import beer.cheese.model.dto.PostDTO;
 import beer.cheese.model.entity.Post;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class PostBuilder {
@@ -17,7 +18,7 @@ public class PostBuilder {
         post.setTags(dto.getTags());
         post.setCommentCount(0);
         post.setStarCount(0);
-        post.setCreatedAt(new Date());
+        post.setCreatedAt(LocalDateTime.now());
         return post;
     }
 }

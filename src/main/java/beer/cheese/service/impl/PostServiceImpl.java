@@ -23,11 +23,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -95,8 +98,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Page<PostVO> listPostsByCategory(String category_, Pageable pageable) {
-        Category category = categoryRepository.findByCategoryName(category_).orElseThrow(()->new NotFoundException("category: " + category_ + " not exists"));
+    public Page<PostVO> listPostsByCategory(String _category, Pageable pageable) {
+        Category category = categoryRepository.findByCategoryName(_category).orElseThrow(()->new NotFoundException("category: " + _category + " not exists"));
         return  postRepository.getAllByCategory(category, pageable).map(CustomPostCopy::apply);
     }
 
@@ -107,6 +110,11 @@ public class PostServiceImpl implements PostService {
     }
 
 
+    @Override
+    public Page<PostVO> listPostsByCategory(String _category, LocalDateTime before, Pageable pageable) {
+        Category category = categoryRepository.findByCategoryName(_category).orElseThrow(() -> new NotFoundException("category: " + _category + " not found"));
+        return postRepository.getAllByCategoryAndCreatedAtBefore(category, before, pageable).map(CustomPostCopy::apply);
+    }
 
     /*****************  need authentication *******************/
 

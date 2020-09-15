@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,29 +25,25 @@ public class Post {
     private String tags;
 
     @Column(name = "created_at")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Image> images = new HashSet<>();
 
     @Column(name = "star_count")
-    private Integer starCount;
+    private Integer starCount = 0;
 
     @Column(name = "comment_count")
-    private Integer commentCount;
+    private Integer commentCount = 0;
 
-    @JsonIgnore
     @JoinColumn(name = "category_id")
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
-    @JsonIgnore
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
-    
-    @JsonIgnore
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private Set<Comment> comments = new HashSet<>();
 
@@ -87,11 +83,11 @@ public class Post {
         this.tags = tags;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
