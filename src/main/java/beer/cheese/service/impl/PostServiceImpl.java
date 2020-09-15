@@ -63,7 +63,7 @@ public class PostServiceImpl implements PostService {
     /**
      * 用来转换Post->PostVO
      */
-    private static class CustomPostCopy{
+    private static class CustomPostCopy {
 
         public static PostVO apply(Post post) {
             PostVO postVO = new PostVO();
@@ -90,30 +90,25 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Page<PostVO> listPostsByUsername(String username, Pageable pageable){
+    public Page<PostVO> listPostsByUsername(String username, Pageable pageable) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("user: " + username + " not found"));
 
         return postRepository.getAllByUser(user, pageable).map(CustomPostCopy::apply);
     }
 
-    @Override
-    @Transactional
-    public Page<PostVO> listPostsByCategory(String _category, Pageable pageable) {
-        Category category = categoryRepository.findByCategoryName(_category).orElseThrow(()->new NotFoundException("category: " + _category + " not exists"));
-        return  postRepository.getAllByCategory(category, pageable).map(CustomPostCopy::apply);
-    }
 
     @Override
-    public PostVO getPostByPid(Long pid) throws NotFoundException{
+    public PostVO getPostByPid(Long pid) throws NotFoundException {
         Post post = postRepository.findById(pid).orElseThrow(() -> new NotFoundException("post: " + pid + " not found"));
         return CustomPostCopy.apply(post);
     }
 
 
     @Override
-    public Page<PostVO> listPostsByCategory(String _category, LocalDateTime before, Pageable pageable) {
+    @Transactional
+    public Page<PostVO> listPostsByCategory(String _category, LocalDateTime before, LocalDateTime after, Pageable pageable) {
         Category category = categoryRepository.findByCategoryName(_category).orElseThrow(() -> new NotFoundException("category: " + _category + " not found"));
-        return postRepository.getAllByCategoryAndCreatedAtBefore(category, before, pageable).map(CustomPostCopy::apply);
+        return postRepository.getAllByCategoryAndCreatedAtBeforeAndCreatedAtAfter(category, before, after, pageable).map(CustomPostCopy::apply);
     }
 
     /*****************  need authentication *******************/
@@ -155,7 +150,7 @@ public class PostServiceImpl implements PostService {
 
     }
 
-    private Set<Image> url2Image(List<String> filenames){
+    private Set<Image> url2Image(List<String> filenames) {
         HashSet<Image> set = new HashSet<>();
         String prefix = AppConstants.STATIC_SERVER_PREFIX;
         String path = AppConstants.BUBBLE_IMAGE_PATH;

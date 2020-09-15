@@ -161,7 +161,7 @@ public class InitDatabase {
         Post post = new Post();
         post.setCategory(category);
         post.setUser(user);
-        post.setCreatedAt(LocalDateTime.now().plusMinutes(index * 10));
+        post.setCreatedAt(LocalDateTime.now().minusMinutes(index * 10));
         post.setTags("life.share");
         post.setContent("hello this is a test bubble");
         post.setStarCount(10);

@@ -20,7 +20,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> getAllByCategory(Category category, Pageable pageable);
 
-    Page<Post> getAllByCategoryAndCreatedAtBefore(Category category, LocalDateTime createdAt, Pageable pageable);
+    Page<Post> getAllByCategoryAndCreatedAtBeforeAndCreatedAtAfter(Category category, LocalDateTime before, LocalDateTime after, Pageable pageable);
 
     @Query("update Post p set p.commentCount = p.commentCount + :increment where p.id = :pid")
     void updateComments(@Param("pid")Long pid, @Param("increment")int increment);
