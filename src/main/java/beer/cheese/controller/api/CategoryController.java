@@ -44,7 +44,7 @@ public class CategoryController {
     public Page<PostVO> listPosts(@PathVariable String category,
                                   @RequestParam(value = "before", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime before,
                                   @RequestParam(value = "after", required = false, defaultValue = DEFAULT_AFTER_DATE_TIME)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime after,
-                                   @PageableDefault(size = 5)Pageable pageable){
+                                   @PageableDefault(size = 5, sort="createdAt", direction = Sort.Direction.DESC)Pageable pageable){
         if(before == null)
             before = LocalDateTime.now();
         else if(after != null){
