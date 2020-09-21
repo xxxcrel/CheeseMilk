@@ -34,5 +34,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Modifying
     @Query("update Comment c set c.starCount = c.starCount + :increment where c.id = :cid")
-    void updateStars(@Param("pid")Long cid, @Param("increment")int increment);
+    void updateStars(@Param("cid")Long cid, @Param("increment")int increment);
 }

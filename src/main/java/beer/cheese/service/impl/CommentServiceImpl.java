@@ -119,9 +119,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void giveAStar(User user, Long commentId) {
         Star star = new Star();
-        star.setUser(user);
-        star.setResourceId(commentId);
-        star.setResourceType(Star.ResourceType.COMMENT.ordinal());
+//        star.setUser(user);
+        star.setStarPK(new Star.StarPK(user, commentId, (Star.ResourceType.COMMENT.ordinal())));
         starRepository.save(star);
         commentRepository.updateStars(commentId, 1);
     }

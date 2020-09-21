@@ -153,10 +153,9 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public void giveAStar(User currentUser, Long postId) {
+
         Star star = new Star();
-        star.setUser(currentUser);
-        star.setResourceId(postId);
-        star.setResourceType(Star.ResourceType.POST.ordinal());
+        star.setStarPK(new Star.StarPK(currentUser, postId, Star.ResourceType.COMMENT.ordinal()));
         starRepository.save(star);
         postRepository.updateStars(postId, 1);
     }

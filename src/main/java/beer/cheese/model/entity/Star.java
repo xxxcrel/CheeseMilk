@@ -6,35 +6,61 @@ import java.util.Objects;
 
 @Entity(name = "Star")
 @Table(name = "star")
-@IdClass(Star.StarPK.class)
 public class Star implements Serializable {
 
-    @Id
-    @Column(name = "resource_id", nullable = false)
-    private Long resourceId;
+    @EmbeddedId
+    private StarPK starPK;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    public StarPK getStarPK() {
+        return starPK;
+    }
 
-    @Id
-    @Column(name = "resource_type")
-    private int resourceType;
+    public void setStarPK(StarPK starPK) {
+        this.starPK = starPK;
+    }
 
+    @Embeddable
     public static class StarPK implements Serializable {
 
+        @ManyToOne
+        @JoinColumn(name = "user_id")
+        private User user;
+
+        @Column(name = "resource_id")
         Long resourceId;
 
-        User user;
-
+        @Column(name = "resource_type")
         int resourceType;
 
-        public StarPK(){}
+        public StarPK() {}
 
-        public StarPK(Long resourceId, User user, int resourceType){
+        public StarPK(User user, Long resourceId, int resourceType) {
+            this.user = user;
             this.resourceType = resourceType;
             this.resourceId = resourceId;
+        }
+
+        public Long getResourceId() {
+            return resourceId;
+        }
+
+        public void setResourceId(Long resourceId) {
+            this.resourceId = resourceId;
+        }
+
+        public int getResourceType() {
+            return resourceType;
+        }
+
+        public void setResourceType(int resourceType) {
+            this.resourceType = resourceType;
+        }
+
+        public User getUser() {
+            return user;
+        }
+
+        public void setUser(User user) {
             this.user = user;
         }
 
@@ -45,42 +71,20 @@ public class Star implements Serializable {
 
         @Override
         public boolean equals(Object o) {
-            if(this == o)
+            if (this == o)
                 return true;
-            if(o == null || this.getClass() != o.getClass())
+            if (o == null || this.getClass() != o.getClass())
                 return false;
-            Star star = (Star)o;
-            return user.equals(star.getUser()) && resourceId.equals(star.getResourceId())
+            StarPK star = (StarPK) o;
+            return user.equals(((StarPK) o).getUser()) && resourceId.equals(star.getResourceId())
                     && resourceType == star.getResourceType();
         }
     }
 
-    public enum ResourceType{
+    public enum ResourceType {
         POST,
         COMMENT
     }
 
-    public Long getResourceId() {
-        return resourceId;
-    }
 
-    public void setResourceId(Long resourceId) {
-        this.resourceId = resourceId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public int getResourceType() {
-        return resourceType;
-    }
-
-    public void setResourceType(int resourceType) {
-        this.resourceType = resourceType;
-    }
 }
