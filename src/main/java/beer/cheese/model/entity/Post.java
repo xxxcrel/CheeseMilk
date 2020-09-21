@@ -3,6 +3,8 @@ package beer.cheese.model.entity;
 import beer.cheese.model.builders.PostBuilder;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.util.Set;
 
 @Entity(name = "Post")
 @Table(name = "post")
+@DynamicUpdate
+@DynamicInsert
 public class Post {
 
     @Id

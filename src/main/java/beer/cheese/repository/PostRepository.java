@@ -16,17 +16,18 @@ import java.util.Date;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    Page<Post> getAllByUser(User user, Pageable pageable);
+    Page<Post> getAllByUserAndCreatedAtBetween(User user, LocalDateTime start, LocalDateTime end, Pageable pageable);
 
     Page<Post> getAllByCategory(Category category, Pageable pageable);
 
-    Page<Post> getAllByCategoryAndCreatedAtBeforeAndCreatedAtAfter(Category category, LocalDateTime before, LocalDateTime after, Pageable pageable);
+    Page<Post> getAllByCategoryAndCreatedAtBetween(Category category, LocalDateTime start, LocalDateTime end, Pageable pageable);
 
+    @Modifying
     @Query("update Post p set p.commentCount = p.commentCount + :increment where p.id = :pid")
     void updateComments(@Param("pid")Long pid, @Param("increment")int increment);
 
     @Modifying
-    @Query("update Post p set p.starCount = p.commentCount + :increment where p.id = :pid")
-    void updateLikes(@Param("pid")Long pid, @Param("increment")int increment);
+    @Query("update Post p set p.starCount = p.starCount + :increment where p.id = :pid")
+    void updateStars(@Param("pid")Long pid, @Param("increment")int increment);
 
 }

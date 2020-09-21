@@ -1,5 +1,6 @@
 package beer.cheese.service;
 
+import static  beer.cheese.controller.api.MultiDataQueryController.DateTuple;
 import beer.cheese.exception.NotFoundException;
 import beer.cheese.model.dto.PostDTO;
 import beer.cheese.model.entity.User;
@@ -16,11 +17,11 @@ import java.util.List;
 
 public interface PostService {
 
-    Page<PostVO> listPostsByCurrentUser(User currentUser, Pageable pageable);
+    Page<PostVO> listPostsByUser(User currentUser, DateTuple queryPeriod, Pageable pageable);
 
-    Page<PostVO> listPostsByUsername(String username, Pageable pageable);
+    Page<PostVO> listPostsByUsername(String username, DateTuple queryPeriod, Pageable pageable);
 
-    Page<PostVO> listPostsByCategory(String category, LocalDateTime before, LocalDateTime after, Pageable pageable);
+    Page<PostVO> listPostsByCategory(String category, DateTuple queryPeriod, Pageable pageable);
 
     PostVO getPostByPid(Long pid) throws NotFoundException;
 
@@ -29,4 +30,6 @@ public interface PostService {
     void postFlexBubble(User currentUser, PostDTO postDTO, List<MultipartFile> images);
 
     void removeBubble(User operateUser, Long postID);
+
+    void giveAStar(User currentUser, Long postId);
 }

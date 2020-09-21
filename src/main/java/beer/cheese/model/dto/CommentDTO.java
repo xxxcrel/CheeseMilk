@@ -1,7 +1,10 @@
 package beer.cheese.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CommentDTO {
 
+    @JsonProperty("parent_id")
     private Long parentId;
 
     private String content;

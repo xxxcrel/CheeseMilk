@@ -3,6 +3,8 @@ package beer.cheese.view.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class CommentVO {
@@ -18,11 +20,11 @@ public class CommentVO {
 
     private String content;
 
-    @JsonProperty("parent_id")
-    private Long parentId;
+    @JsonProperty("parent_nickname")
+    private String parentNickname;
 
-    @JsonFormat(pattern = "yy:mm:dd HH:mm:SS")
-    private Date createdAt;
+//    @JsonFormat(pattern = "yy:mm:dd HH:mm:SS")
+    private LocalDateTime createdAt;
 
     @JsonProperty("sub_comment_count")
     private int subCommentCount;
@@ -67,19 +69,19 @@ public class CommentVO {
         this.content = content;
     }
 
-    public Long getParentId() {
-        return parentId;
+    public String getParentNickname() {
+        return parentNickname;
     }
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
+    public void setParentNickname(String parentNickname) {
+        this.parentNickname = parentNickname;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 

@@ -148,11 +148,6 @@ public class UserController {
         return Result.ok("post successful");
     }
 
-    @GetMapping(value = "/user/posts", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<PostVO> getUserBubbleList(@CurrentUser User user, @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable){
-        return postService.listPostsByCurrentUser(user, pageable);
-    }
-
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
     public UserVO getCurrentUser(@CurrentUser User currentUser){

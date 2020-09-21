@@ -168,7 +168,7 @@ public class InitDatabase {
         post.getImages().add(new Image(AppConstants.STATIC_SERVER_PREFIX + "/images/bubble/daisy.jpg"));
         Comment comment = new Comment();
         comment.setPost(post);
-        comment.setCreatedAt(new Date());
+        comment.setCreatedAt(LocalDateTime.now());
         comment.setContent("this is is a test review");
         comment.setUser(user);
         post.getComments().add(comment);

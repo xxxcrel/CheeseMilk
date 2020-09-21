@@ -55,6 +55,11 @@ public class Star implements Serializable {
         }
     }
 
+    public enum ResourceType{
+        POST,
+        COMMENT
+    }
+
     public Long getResourceId() {
         return resourceId;
     }

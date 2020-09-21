@@ -15,16 +15,18 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
 
-    private static final String DEFAULT_AFTER_DATE_TIME = "1970-01-01T00:00:00.000";
+    public static final String DEFAULT_AFTER_DATE_TIME = "1970-01-01T00:00:00.000";
 
     @Autowired
     private PostService postService;
@@ -40,17 +42,4 @@ public class CategoryController {
         return categoryService.listCategories(pageable);
     }
 
-    @GetMapping(value = "/{category}/posts")
-    public Page<PostVO> listPosts(@PathVariable String category,
-                                  @RequestParam(value = "before", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime before,
-                                  @RequestParam(value = "after", required = false, defaultValue = DEFAULT_AFTER_DATE_TIME)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime after,
-                                   @PageableDefault(size = 5, sort="createdAt", direction = Sort.Direction.DESC)Pageable pageable){
-        if(before == null)
-            before = LocalDateTime.now();
-        else if(after != null){
-            if(!before.isAfter(after))
-                throw new InvalidParameterException("before time must be great than after, but before time: [" + before.toString() + "], after time: [" + after.toString() + "]");
-        }
-        return postService.listPostsByCategory(category, before, after, pageable);
-    }
 }

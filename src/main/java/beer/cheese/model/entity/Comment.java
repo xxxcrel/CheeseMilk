@@ -1,10 +1,16 @@
 package beer.cheese.model.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity(name = "Comment")
 @Table(name = "comment")
+@DynamicUpdate
+@DynamicInsert
 public class Comment {
     @Id
     @GeneratedValue
@@ -18,20 +24,20 @@ public class Comment {
     private String content;
 
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "star_count")
-    private int starCount;
+    private int starCount = 0;
 
     @Column(name = "sub_comment_count")
-    private int subCommentCount;
+    private int subCommentCount = 0;
 
     @JoinColumn(name = "post_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Post post;
 
     @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User user;
 
 
@@ -59,11 +65,11 @@ public class Comment {
         this.content = review;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 

@@ -1,15 +1,15 @@
 package beer.cheese.service.impl;
 
 import beer.cheese.constant.AppConstants;
-import beer.cheese.model.entity.User;
+import static beer.cheese.controller.api.MultiDataQueryController.DateTuple;
+
+import beer.cheese.model.entity.*;
 import beer.cheese.repository.CategoryRepository;
 import beer.cheese.repository.PostRepository;
+import beer.cheese.repository.StarRepository;
 import beer.cheese.repository.UserRepository;
 import beer.cheese.exception.NotFoundException;
 import beer.cheese.model.dto.PostDTO;
-import beer.cheese.model.entity.Category;
-import beer.cheese.model.entity.Image;
-import beer.cheese.model.entity.Post;
 import beer.cheese.security.acl.AclDTO;
 import beer.cheese.security.acl.AclManager;
 import beer.cheese.service.FileService;
@@ -23,14 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,6 +48,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private StarRepository starRepository;
 
     @Autowired
     private AclManager aclManager;
@@ -80,8 +80,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Page<PostVO> listPostsByCurrentUser(User currentUser, Pageable pageable) {
-        Page<Post> rawPostList = postRepository.getAllByUser(currentUser, pageable);
+    public Page<PostVO> listPostsByUser(User currentUser, DateTuple queryPeriod, Pageable pageable) {
+        Page<Post> rawPostList = postRepository.getAllByUserAndCreatedAtBetween(currentUser, queryPeriod.start, queryPeriod.end, pageable);
         return rawPostList.map(CustomPostCopy::apply);
     }
 
@@ -90,10 +90,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Page<PostVO> listPostsByUsername(String username, Pageable pageable) {
+    public Page<PostVO> listPostsByUsername(String username, DateTuple queryPeriod, Pageable pageable) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("user: " + username + " not found"));
 
-        return postRepository.getAllByUser(user, pageable).map(CustomPostCopy::apply);
+        return listPostsByUser(user, queryPeriod, pageable);
     }
 
 
@@ -106,9 +106,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Page<PostVO> listPostsByCategory(String _category, LocalDateTime before, LocalDateTime after, Pageable pageable) {
+    public Page<PostVO> listPostsByCategory(String _category, DateTuple queryPeriod, Pageable pageable) {
         Category category = categoryRepository.findByCategoryName(_category).orElseThrow(() -> new NotFoundException("category: " + _category + " not found"));
-        return postRepository.getAllByCategoryAndCreatedAtBeforeAndCreatedAtAfter(category, before, after, pageable).map(CustomPostCopy::apply);
+        return postRepository.getAllByCategoryAndCreatedAtBetween(category, queryPeriod.start, queryPeriod.end, pageable).map(CustomPostCopy::apply);
     }
 
     /*****************  need authentication *******************/
@@ -150,6 +150,17 @@ public class PostServiceImpl implements PostService {
 
     }
 
+    @Override
+    @Transactional
+    public void giveAStar(User currentUser, Long postId) {
+        Star star = new Star();
+        star.setUser(currentUser);
+        star.setResourceId(postId);
+        star.setResourceType(Star.ResourceType.POST.ordinal());
+        starRepository.save(star);
+        postRepository.updateStars(postId, 1);
+    }
+
     private Set<Image> url2Image(List<String> filenames) {
         HashSet<Image> set = new HashSet<>();
         String prefix = AppConstants.STATIC_SERVER_PREFIX;
@@ -161,5 +172,7 @@ public class PostServiceImpl implements PostService {
         });
         return set;
     }
+
+
 
 }
