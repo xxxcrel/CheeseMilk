@@ -51,6 +51,7 @@ public class PostController {
     @DeleteMapping("/posts/{postID}")
     @ResponseStatus(HttpStatus.OK)
     public Result<String> removeBubble(@CurrentUser User user, @PathVariable Long postID) {
+
         postService.removeBubble(user, postID);
 
         return Result.ok("remove post" + postID + " successful");

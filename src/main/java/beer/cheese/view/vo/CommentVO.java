@@ -24,6 +24,7 @@ public class CommentVO {
     private String parentNickname;
 
 //    @JsonFormat(pattern = "yy:mm:dd HH:mm:SS")
+    @JsonProperty("created_at")
     private LocalDateTime createdAt;
 
     @JsonProperty("sub_comment_count")

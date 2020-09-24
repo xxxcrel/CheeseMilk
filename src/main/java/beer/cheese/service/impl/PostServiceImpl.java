@@ -1,6 +1,7 @@
 package beer.cheese.service.impl;
 
 import beer.cheese.constant.AppConstants;
+
 import static beer.cheese.controller.api.MultiDataQueryController.DateTuple;
 
 import beer.cheese.model.entity.*;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,7 +83,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Page<PostVO> listPostsByUser(User currentUser, DateTuple queryPeriod, Pageable pageable) {
-        Page<Post> rawPostList = postRepository.getAllByUserAndCreatedAtBetween(currentUser, queryPeriod.start, queryPeriod.end, pageable);
+        Page<Post> rawPostList = postRepository.getAllByUserAndCreatedAtAfterAndCreatedAtBefore(currentUser, queryPeriod.start, queryPeriod.end, pageable);
         return rawPostList.map(CustomPostCopy::apply);
     }
 
@@ -106,9 +108,17 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Page<PostVO> listPostsByCategory(String _category, DateTuple queryPeriod, Pageable pageable) {
+    public Page<PostVO> listPostsByCategory(User user, String _category, DateTuple queryPeriod, Pageable pageable) {
         Category category = categoryRepository.findByCategoryName(_category).orElseThrow(() -> new NotFoundException("category: " + _category + " not found"));
-        return postRepository.getAllByCategoryAndCreatedAtBetween(category, queryPeriod.start, queryPeriod.end, pageable).map(CustomPostCopy::apply);
+        Page<Post> pagedPost = postRepository.getAllByCategoryAndCreatedAtAfterAndCreatedAtBefore(category, queryPeriod.start, queryPeriod.end, pageable);
+        if(user == null){
+            return pagedPost.map(CustomPostCopy::apply);
+        }
+        return pagedPost.map(CustomPostCopy::apply).map(postVO -> {
+            postVO.setStarred(starRepository.existsById(new Star.StarPK(user, postVO.getId(), Star.ResourceType.POST.ordinal())));
+            System.out.println(postVO.isStarred());
+            return postVO;
+        });
     }
 
     /*****************  need authentication *******************/
@@ -153,9 +163,11 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public void giveAStar(User currentUser, Long postId) {
+        Assert.notNull(currentUser,"user must be authenticated");
+        Assert.isTrue(postRepository.existsById(postId), "post id doesn't exist");
 
         Star star = new Star();
-        star.setStarPK(new Star.StarPK(currentUser, postId, Star.ResourceType.COMMENT.ordinal()));
+        star.setStarPK(new Star.StarPK(currentUser, postId, Star.ResourceType.POST.ordinal()));
         starRepository.save(star);
         postRepository.updateStars(postId, 1);
     }
@@ -171,7 +183,6 @@ public class PostServiceImpl implements PostService {
         });
         return set;
     }
-
 
 
 }

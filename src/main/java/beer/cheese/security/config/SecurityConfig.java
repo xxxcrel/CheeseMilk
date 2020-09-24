@@ -27,7 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @Configuration
 @ComponentScan(basePackages = "beer.cheese.security")
 @Import({AclConfig.class})

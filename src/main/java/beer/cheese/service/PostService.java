@@ -21,7 +21,7 @@ public interface PostService {
 
     Page<PostVO> listPostsByUsername(String username, DateTuple queryPeriod, Pageable pageable);
 
-    Page<PostVO> listPostsByCategory(String category, DateTuple queryPeriod, Pageable pageable);
+    Page<PostVO> listPostsByCategory(User user, String category, DateTuple queryPeriod, Pageable pageable);
 
     PostVO getPostByPid(Long pid) throws NotFoundException;
 

@@ -5,7 +5,9 @@ import beer.cheese.exception.AlreadyExistsException;
 import beer.cheese.model.dto.PostDTO;
 import beer.cheese.model.dto.UserRegisterDTO;
 import beer.cheese.model.dto.UserUpdateDTO;
+import beer.cheese.model.entity.Star;
 import beer.cheese.model.entity.User;
+import beer.cheese.repository.StarRepository;
 import beer.cheese.security.CurrentUser;
 import beer.cheese.service.*;
 import beer.cheese.util.VerifyCodeGenerator;
@@ -55,7 +57,7 @@ public class UserController {
     private PostService postService;
 
     @Autowired
-    private CommentService commentService;
+    private StarRepository starRepository;
 
     @Autowired
     @Qualifier("jdkFileService")
@@ -63,58 +65,6 @@ public class UserController {
 
     @Autowired
     private MailService mailService;
-
-    /************ current user controller **************/
-
-    @GetMapping("/greeting")
-    public String greeting(){
-        return "hello world";
-    }
-
-    @PostMapping(value = "/check", consumes = MediaType.TEXT_PLAIN_VALUE)
-    public void check(@RequestBody String s) throws IOException {
-//        System.out.println(request.getInputStream().read());
-        System.out.println("check");
-        System.out.println(s);
-    }
-
-    @GetMapping(value = "/check", params = "username")
-    @ResponseStatus(HttpStatus.OK)
-    public void usernameCheck(@RequestParam("username")String username){
-        if(userService.presentByUsername(username))
-            throw new AlreadyExistsException("user:" + username + " already exists");
-    }
-
-    @GetMapping(value = "/code/email", params = "address")
-    @ResponseStatus(HttpStatus.OK)
-    public Result<String> verifyEmail(@RequestParam("address")@Email String email, Model model, HttpSession session){
-        if(userService.presentByEmail(email))
-            throw new AlreadyExistsException("email already registered");
-
-        String verifyCode = VerifyCodeGenerator.generate(6);
-        model.addAttribute("verifyDTO", new VerifyDTO(verifyCode, LocalDateTime.now()));
-        mailService.sendMail(email, verifyCode);
-
-        return Result.ok("verify email already send to: " + email);
-    }
-
-    @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Result<String> register(@Valid UserRegisterDTO registerDTO,
-                           @SessionAttribute(value = "verifyDTO")VerifyDTO verifyDTO,
-                           SessionStatus sessionStatus) {
-        if(!verifyDTO.check(registerDTO.getCode(), LocalDateTime.now()))
-            return new Result<>("Time out, please resend email verification");
-        sessionStatus.setComplete();
-        logger.info("register dto: " + registerDTO);
-        userService.register(registerDTO);
-        return Result.ok("register successful");
-    }
-
-//    @PostMapping("/test")
-//    public void test(@RequestPart String username){
-//        logger.info("username " + username);
-//    }
 
     @PostMapping(value = "/login", params = {"username", "password"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -133,7 +83,7 @@ public class UserController {
 
     @PostMapping(path = "/user/profiles", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Result<String> updateNickname(@CurrentUser User currentUser, @ModelAttribute @Validated UserUpdateDTO updateDTO) {
+    public Result<String> updateNickname(@CurrentUser User currentUser, @RequestPart(name = "meta-data") @Validated UserUpdateDTO updateDTO) {
         userService.updateUserProfile(currentUser, updateDTO.getUpdatedField(), updateDTO.getUpdatedValue());
         return Result.ok("update field: " + updateDTO.getUpdatedField() + " successful");
     }
@@ -144,11 +94,10 @@ public class UserController {
     public Result<String> postBubble(@CurrentUser User user, @RequestPart("meta-data") PostDTO postDTO, @RequestPart(value = "images[]", required = false) List<MultipartFile> images) {
 
         postService.postFlexBubble(user, postDTO, images);
-
         return Result.ok("post successful");
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user/profiles")
     @ResponseStatus(HttpStatus.OK)
     public UserVO getCurrentUser(@CurrentUser User currentUser){
         UserVO result = new UserVO();

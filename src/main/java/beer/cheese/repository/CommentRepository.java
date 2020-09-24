@@ -18,7 +18,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Page<Comment> getAllByPost(Post post, Pageable pageable);
 
     Page<Comment> getAllByUser(User user, Pageable pageable);
-
+    
     Page<Comment> getAllByPostAndCreatedAtBetweenAndParentIsNull(Post post, LocalDateTime start, LocalDateTime end, Pageable pageable);
 
     Optional<Comment> findCommentById(Long id);

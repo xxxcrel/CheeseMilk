@@ -46,6 +46,8 @@ public class PostVO {
     @JsonProperty("comment_url")
     private String commentUrl;
 
+    private boolean starred;
+
     public Long getId() {
         return id;
     }
@@ -136,6 +138,14 @@ public class PostVO {
 
     public String getCommentUrl() {
         return commentUrl;
+    }
+
+    public boolean isStarred() {
+        return starred;
+    }
+
+    public void setStarred(boolean starred) {
+        this.starred = starred;
     }
 
     public void setCommentUrl(String commentUrl) {

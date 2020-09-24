@@ -55,10 +55,11 @@ public class MultiDataQueryController {
     }
 
     @GetMapping(value = "/categories/{category}/posts")
-    public Page<PostVO> listPosts(@PathVariable String category,
+    public Page<PostVO> listPosts(@CurrentUser User user,
+                                  @PathVariable String category,
                                   @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
                                   @ModelAttribute("queryPeriod") DateTuple queryPeriod) {
-        return postService.listPostsByCategory(category, queryPeriod, pageable);
+        return postService.listPostsByCategory(user, category, queryPeriod, pageable);
     }
 
     @GetMapping(value = "/user/posts", produces = MediaType.APPLICATION_JSON_VALUE)
