@@ -26,7 +26,6 @@ public class UserVO {
     @Pattern(regexp = "[0|1]", message = "性别格式只能为0或1")
     private Integer gender;
 
-    @JsonProperty("avatar_url")
     private String avatarUrl;
 
     private String location = null;
@@ -35,15 +34,12 @@ public class UserVO {
 
     private LocalDateTime birth;
 
-    @JsonProperty("student_attr")
     private String studentAttr;
 
     @JsonFormat(pattern = "yy:mm:dd HH:mm:ss", timezone = "GMT+8")
-    @JsonProperty("created_at")
     private LocalDateTime createdAt;
 
     @JsonFormat(pattern = "yy:mm:dd HH:mm:ss")
-    @JsonProperty("updated_at")
     private Date updatedAt;
 
     private boolean locked;

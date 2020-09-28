@@ -2,18 +2,18 @@ package beer.cheese.service.impl;
 
 import beer.cheese.constant.AppConstants;
 import beer.cheese.exception.UploadFailureException;
+import beer.cheese.model.dto.CourseDTO;
 import beer.cheese.model.dto.UserRegisterDTO;
+import beer.cheese.model.entity.Course;
 import beer.cheese.model.entity.User;
-import beer.cheese.repository.CommentRepository;
-import beer.cheese.repository.PostRepository;
-import beer.cheese.repository.RoleRepository;
-import beer.cheese.repository.UserRepository;
+import beer.cheese.repository.*;
 import beer.cheese.security.acl.AclDTO;
 import beer.cheese.security.acl.AclManager;
 import beer.cheese.service.FileService;
 import beer.cheese.service.UserService;
 import beer.cheese.util.JwtUtils;
 import beer.cheese.util.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.acls.domain.BasePermission;
@@ -26,6 +26,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Field;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -55,6 +57,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     @Qualifier("jdkFileService")
     private FileService fileService;
+    @Autowired
+    private CourseRepository courseRepository;
 
     @Autowired
     private AclManager aclManager;
@@ -119,7 +123,7 @@ public class UserServiceImpl implements UserService {
                 AppConstants.USER_AVATAR_PATH + avatarName;
         try {
             fileService.uploadFile(AppConstants.USER_AVATAR_PATH, avatarName, avatar);
-        }catch (UploadFailureException e){
+        } catch (UploadFailureException e) {
             e.printStackTrace();
         }
         user.setAvatarUrl(avatarUrl);
@@ -136,4 +140,26 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email).isPresent();
     }
 
+    @Override
+    public void uploadTimetable(User user, List<CourseDTO> courses) {
+        courseRepository.deleteAllByUser(user);
+
+        List<Course> pos;
+        pos = courses.stream().map(courseDTO -> {
+            Course course = new Course();
+            BeanUtils.copyProperties(courseDTO, course);
+            course.setUser(user);
+            return course;
+        }).collect(Collectors.toList());
+        courseRepository.saveAll(pos);
+    }
+
+    @Override
+    public List<CourseDTO> getTimetableByUser(User user) {
+        return courseRepository.findAllByUser(user).stream().map(course -> {
+            CourseDTO courseDTO = new CourseDTO();
+            BeanUtils.copyProperties(course, courseDTO);
+            return courseDTO;
+        }).collect(Collectors.toList());
+    }
 }

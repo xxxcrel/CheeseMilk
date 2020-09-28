@@ -13,10 +13,8 @@ public class PostVO {
 
     private String nickname;
 
-    @JsonProperty("avatar_url")
     private String avatarUrl;
 
-    @JsonProperty("created_at")
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
@@ -28,22 +26,15 @@ public class PostVO {
     private String tags;
 
     //0:moments
-    @JsonProperty("category_name")
     private String categoryName;
 
-    @JsonProperty("star_count")
     private Integer starCount;
 
-    @JsonProperty("comment_count")
+
     private Integer commentCount;
 
-    @JsonProperty("images")
     private List<String> imageUrls;
 
-    @JsonProperty("thumbnail_images")
-    private List<String> thumbnailUrls;
-
-    @JsonProperty("comment_url")
     private String commentUrl;
 
     private boolean starred;
@@ -126,14 +117,6 @@ public class PostVO {
 
     public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
-    }
-
-    public List<String> getThumbnailUrls() {
-        return thumbnailUrls;
-    }
-
-    public void setThumbnailUrls(List<String> thumbnailUrls) {
-        this.thumbnailUrls = thumbnailUrls;
     }
 
     public String getCommentUrl() {

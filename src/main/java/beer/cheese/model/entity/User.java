@@ -60,10 +60,10 @@ public class User implements Serializable {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
     private Set<Post> posts = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "user")
     private Set<Comment> comments = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -72,6 +72,9 @@ public class User implements Serializable {
 
     @ManyToMany(mappedBy = "members", fetch = FetchType.EAGER)
     private Set<ManagerGroup> managerGroups = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    private Set<Course> courses = new HashSet<>();
 
 
     /***************************** spring security user details*************/
@@ -240,5 +243,13 @@ public class User implements Serializable {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }

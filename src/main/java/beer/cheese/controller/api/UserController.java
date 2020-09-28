@@ -2,6 +2,7 @@ package beer.cheese.controller.api;
 
 import beer.cheese.constant.JwtConstants;
 import beer.cheese.exception.AlreadyExistsException;
+import beer.cheese.model.dto.CourseDTO;
 import beer.cheese.model.dto.PostDTO;
 import beer.cheese.model.dto.UserRegisterDTO;
 import beer.cheese.model.dto.UserUpdateDTO;
@@ -105,4 +106,16 @@ public class UserController {
         return result;
     }
 
+    @PostMapping("/user/timetable")
+    @ResponseStatus(HttpStatus.OK)
+    public void uploadTimetable(@CurrentUser User user,
+                                @RequestPart(name = "timetable")List<CourseDTO> courses){
+        userService.uploadTimetable(user, courses);
+    }
+
+    @GetMapping("/user/timetable")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CourseDTO> getTimetable(@CurrentUser User user){
+        return userService.getTimetableByUser(user);
+    }
 }

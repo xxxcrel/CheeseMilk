@@ -15,19 +15,15 @@ public class CommentVO {
 
     private String username;
 
-    @JsonProperty("avatar_url")
     private String avatarUrl;
 
     private String content;
 
-    @JsonProperty("parent_nickname")
     private String parentNickname;
 
 //    @JsonFormat(pattern = "yy:mm:dd HH:mm:SS")
-    @JsonProperty("created_at")
     private LocalDateTime createdAt;
 
-    @JsonProperty("sub_comment_count")
     private int subCommentCount;
 
     public Long getId() {
