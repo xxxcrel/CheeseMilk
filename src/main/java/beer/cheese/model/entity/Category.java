@@ -16,13 +16,11 @@ public class Category {
     private Long id;
 
     @Column(name = "category_name")
-    @JsonProperty("category_name")
     private String categoryName;
 
     private String description;
 
     @Column(name = "avatar_url")
-    @JsonProperty("avatar_url")
     private String avatarUrl;
 
     @JsonIgnore

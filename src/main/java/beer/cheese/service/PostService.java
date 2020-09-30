@@ -1,6 +1,7 @@
 package beer.cheese.service;
 
-import static  beer.cheese.controller.api.MultiDataQueryController.DateTuple;
+import static beer.cheese.controller.api.MultiDataQueryController.DateTuple;
+
 import beer.cheese.exception.NotFoundException;
 import beer.cheese.model.dto.PostDTO;
 import beer.cheese.model.entity.User;
@@ -31,5 +32,7 @@ public interface PostService {
 
     void removeBubble(User operateUser, Long postID);
 
-    void giveAStar(User currentUser, Long postId);
+    void starPost(User currentUser, Long postId);
+
+    void unstarPost(User currentUser, Long postId);
 }

@@ -9,12 +9,10 @@ import javax.validation.constraints.NotNull;
 
 public class UserUpdateDTO {
 
-    @JsonProperty("updated_field")
     @NotEmpty
     @ValidEntityField(entityClass = User.class)
     private String updatedField;
 
-    @JsonProperty("updated_value")
     @NotNull
     private Object updatedValue;
 

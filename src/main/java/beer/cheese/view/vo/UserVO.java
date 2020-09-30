@@ -36,11 +36,9 @@ public class UserVO {
 
     private String studentAttr;
 
-    @JsonFormat(pattern = "yy:mm:dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createdAt;
 
-    @JsonFormat(pattern = "yy:mm:dd HH:mm:ss")
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     private boolean locked;
 
@@ -132,12 +130,11 @@ public class UserVO {
         this.studentAttr = studentAttr;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
 }

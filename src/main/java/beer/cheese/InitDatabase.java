@@ -76,10 +76,13 @@ public class InitDatabase {
         admin.setPassword(passwordEncoder.encode("xc514xxx"));
         admin.getRoles().add(role);
         User testUser = new User();
+        testUser.setCreatedAt(LocalDateTime.now());
+        testUser.setUpdatedAt(LocalDateTime.now());
         testUser.setUsername("tester");
         testUser.setNickname("Tester");
         testUser.setEmail("test@test.com");
         testUser.setBio("i'm tester");
+        testUser.setLocation("0793");
         testUser.setEnabled(true);
         testUser.setAvatarUrl(AppConstants.STATIC_SERVER_PREFIX + AppConstants.USER_AVATAR_PATH + "avatar.jpg");
         testUser.setPassword(passwordEncoder.encode("tester"));

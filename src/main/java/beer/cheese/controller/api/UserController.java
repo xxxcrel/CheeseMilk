@@ -76,15 +76,15 @@ public class UserController {
         return Result.ok("login successful");
     }
 
-    @PostMapping(path = "/user/profiles", params = "avatar", consumes = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
-    public Result<String> uploadAvatar(@CurrentUser User currentUser , @RequestParam("avatar")@Validated MultipartFile avatar){
+    @PostMapping(path = "/user/profile")
+    public Result<String> uploadAvatar(@CurrentUser User currentUser , @RequestPart("update_avatar")@Validated MultipartFile avatar){
         userService.uploadAvatar(currentUser, avatar);
         return Result.ok("update avatar successful!");
     }
 
-    @PostMapping(path = "/user/profiles", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/user/profile", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Result<String> updateNickname(@CurrentUser User currentUser, @RequestPart(name = "meta-data") @Validated UserUpdateDTO updateDTO) {
+    public Result<String> updateNickname(@CurrentUser User currentUser, @RequestBody @Validated UserUpdateDTO updateDTO) {
         userService.updateUserProfile(currentUser, updateDTO.getUpdatedField(), updateDTO.getUpdatedValue());
         return Result.ok("update field: " + updateDTO.getUpdatedField() + " successful");
     }
@@ -98,7 +98,7 @@ public class UserController {
         return Result.ok("post successful");
     }
 
-    @GetMapping("/user/profiles")
+    @GetMapping("/user/profile")
     @ResponseStatus(HttpStatus.OK)
     public UserVO getCurrentUser(@CurrentUser User currentUser){
         UserVO result = new UserVO();
@@ -108,9 +108,10 @@ public class UserController {
 
     @PostMapping("/user/timetable")
     @ResponseStatus(HttpStatus.OK)
-    public void uploadTimetable(@CurrentUser User user,
-                                @RequestPart(name = "timetable")List<CourseDTO> courses){
+    public Result<String> uploadTimetable(@CurrentUser User user,
+                                @RequestBody List<CourseDTO> courses){
         userService.uploadTimetable(user, courses);
+        return Result.ok("上传课程表成功");
     }
 
     @GetMapping("/user/timetable")

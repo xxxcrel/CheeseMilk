@@ -23,6 +23,7 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -76,13 +77,18 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
         boolean cacheWasUsed = true;
         Object user = this.userCache.get(username, User.class);
+        if(user != null){
+            logger.error("have cache");
+        }else
+            logger.error("no cache");
         if (user == null) {
             cacheWasUsed = false;
 
             try {
                 user = retrieveUser(username);
+//                logger.error(((User)user).getAvatarUrl());
             } catch (UsernameNotFoundException notFound) {
-                logger.debug("User '" + username + "' not found");
+//                logger.debug("User '" + username + "' not found");
                 throw notFound;
             }
 

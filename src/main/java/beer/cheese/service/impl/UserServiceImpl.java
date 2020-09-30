@@ -16,6 +16,11 @@ import beer.cheese.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +43,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+//@CacheConfig(cacheNames = "userCache")
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -104,19 +111,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserProfile(User currentUser, String field, Object value) {
+    @CacheEvict(cacheNames = "userCache", key = "#user.username")
+    public void updateUserProfile(User user, String field, Object value) {
         Class<?> clazz = User.class;
+
         try {
             Field updateField = clazz.getDeclaredField(field);
+            Class<?> fieldType = updateField.getType();
+            boolean isInteger = fieldType.isAssignableFrom(Integer.class);
+            if(isInteger)
+                value = Integer.parseInt((String) value);
             updateField.setAccessible(true);
-            updateField.set(currentUser, value);
-            userRepository.save(currentUser);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+            updateField.set(user, value);
+            userRepository.save(user);
+        } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
             e.printStackTrace();
         }
+
     }
 
+
+
     @Override
+    @CacheEvict(cacheNames = "userCache", key = "#user.username")
     public void uploadAvatar(User user, MultipartFile avatar) {
         String avatarName = StringUtils.generateFileName(user.getUsername(), Objects.requireNonNull(avatar.getOriginalFilename()));
         String avatarUrl = AppConstants.STATIC_SERVER_PREFIX +
@@ -128,6 +145,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setAvatarUrl(avatarUrl);
         userRepository.saveAndFlush(user);
+
     }
 
     @Override

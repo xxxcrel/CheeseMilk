@@ -83,8 +83,12 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Page<PostVO> listPostsByUser(User currentUser, DateTuple queryPeriod, Pageable pageable) {
-        Page<Post> rawPostList = postRepository.getAllByUserAndCreatedAtAfterAndCreatedAtBefore(currentUser, queryPeriod.start, queryPeriod.end, pageable);
-        return rawPostList.map(CustomPostCopy::apply);
+        Page<Post> pagedPost = postRepository.getAllByUserAndCreatedAtAfterAndCreatedAtBefore(currentUser, queryPeriod.start, queryPeriod.end, pageable);
+        return pagedPost.map(CustomPostCopy::apply).map(postVO -> {
+            postVO.setStarred(starRepository.existsById(new Star.StarPK(currentUser, postVO.getId(), Star.ResourceType.POST.ordinal())));
+            return postVO;
+        });
+//        return rawPostList.map(CustomPostCopy::apply);
     }
 
     /************ doesn't need authentication *****************/
@@ -116,7 +120,6 @@ public class PostServiceImpl implements PostService {
         }
         return pagedPost.map(CustomPostCopy::apply).map(postVO -> {
             postVO.setStarred(starRepository.existsById(new Star.StarPK(user, postVO.getId(), Star.ResourceType.POST.ordinal())));
-            System.out.println(postVO.isStarred());
             return postVO;
         });
     }
@@ -162,7 +165,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void giveAStar(User currentUser, Long postId) {
+    public void starPost(User currentUser, Long postId) {
         Assert.notNull(currentUser,"user must be authenticated");
         Assert.isTrue(postRepository.existsById(postId), "post id doesn't exist");
 
@@ -170,6 +173,18 @@ public class PostServiceImpl implements PostService {
         star.setStarPK(new Star.StarPK(currentUser, postId, Star.ResourceType.POST.ordinal()));
         starRepository.save(star);
         postRepository.updateStars(postId, 1);
+    }
+
+    @Override
+    @Transactional
+    public void unstarPost(User currentUser, Long postId) {
+        Assert.notNull(currentUser,"user must be authenticated");
+        Assert.isTrue(postRepository.existsById(postId), "post id doesn't exist");
+
+        Star star = new Star();
+        star.setStarPK(new Star.StarPK(currentUser, postId, Star.ResourceType.POST.ordinal()));
+        starRepository.delete(star);
+        postRepository.updateStars(postId, -1);
     }
 
     private Set<Image> url2Image(List<String> filenames) {

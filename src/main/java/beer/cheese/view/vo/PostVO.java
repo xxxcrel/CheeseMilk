@@ -1,6 +1,7 @@
 package beer.cheese.view.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,6 @@ public class PostVO {
 
     private String avatarUrl;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     private String content;
