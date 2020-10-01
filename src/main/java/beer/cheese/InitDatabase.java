@@ -82,7 +82,7 @@ public class InitDatabase {
         testUser.setNickname("Tester");
         testUser.setEmail("test@test.com");
         testUser.setBio("i'm tester");
-        testUser.setLocation("0793");
+        testUser.setLocation("江西上饶");
         testUser.setEnabled(true);
         testUser.setAvatarUrl(AppConstants.STATIC_SERVER_PREFIX + AppConstants.USER_AVATAR_PATH + "avatar.jpg");
         testUser.setPassword(passwordEncoder.encode("tester"));
@@ -95,7 +95,7 @@ public class InitDatabase {
     private void initOfficialCategory() {
         User owner = userRepository.findByUsername("xxxcrel").get();
         Category whiteWall = new Category();
-        whiteWall.setCategoryName("WhiteWall");
+        whiteWall.setCategoryName("表白墙");
         whiteWall.setDescription("南理表白墙，专注大学生的幸福");
         ManagerGroup whiteWallGroup = new ManagerGroup();
         whiteWallGroup.setCategory(whiteWall);
@@ -104,7 +104,7 @@ public class InitDatabase {
 
 
         Category moments = new Category();
-        moments.setCategoryName("Moments");
+        moments.setCategoryName("瞬间");
         moments.setDescription("记录生活,忘记你");
         ManagerGroup momentsGroup = new ManagerGroup();
         momentsGroup.setCategory(moments);
@@ -112,7 +112,7 @@ public class InitDatabase {
         manageGroupRepository.save(momentsGroup);
 
         Category idleFish = new Category();
-        idleFish.setCategoryName("IdleFish");
+        idleFish.setCategoryName("咸鱼");
         idleFish.setDescription("南理闲鱼，淘尽二手");
         ManagerGroup idleFishGroup = new ManagerGroup();
         idleFishGroup.setCategory(idleFish);
@@ -120,7 +120,7 @@ public class InitDatabase {
         manageGroupRepository.save(idleFishGroup);
 
         Category rentHouse = new Category();
-        rentHouse.setCategoryName("RentHouse");
+        rentHouse.setCategoryName("租房");
         rentHouse.setDescription("租房，出租，你想要的我都有");
         ManagerGroup rentHouseGroup = new ManagerGroup();
         rentHouseGroup.setCategory(rentHouse);
@@ -150,11 +150,11 @@ public class InitDatabase {
 
     private void insertBubbles(){
         User user = userRepository.findByUsername("tester").get();
-        Category whiteWall = categoryRepository.findByCategoryName("WhiteWall").get();
+        Category whiteWall = categoryRepository.findByCategoryName("表白墙").get();
         for(int i = 0; i < 10; ++i){
             postRepository.save(generatePost(user, whiteWall, i));
         }
-        Category moments = categoryRepository.findByCategoryName("Moments").get();
+        Category moments = categoryRepository.findByCategoryName("瞬间").get();
         for(int i = 0; i < 10; ++i){
             postRepository.save(generatePost(user, moments, i));
         }
