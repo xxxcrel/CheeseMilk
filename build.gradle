@@ -1,12 +1,9 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'war'
 }
 
-apply plugin: 'java'
-apply plugin: 'io.spring.dependency-management'
-
-group 'beer.cheese'
+group 'com.cheese'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -15,20 +12,83 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    //Junit 5
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.2'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.2'
+    testCompile group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.6.2'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '2.2'
+    //spring test
+    testCompile 'org.springframework.security:spring-security-test:5.2.2.RELEASE'
+    testCompile 'org.springframework:spring-test:5.2.2.RELEASE'
+    testCompile 'com.jayway.jsonpath:json-path:2.4.0'
+
+    implementation 'com.h2database:h2:1.4.200'
+
+    //database
     implementation 'mysql:mysql-connector-java:8.0.16'
+    //hibernate
+    implementation 'org.hibernate:hibernate-agroal:5.4.8.Final'
+    implementation 'org.hibernate:hibernate-validator-cdi:6.1.5.Final'
+    implementation 'javax.el:javax.el-api:3.0.0'
+    implementation 'org.glassfish:javax.el:3.0.0'
+    //connector pool
     implementation 'org.apache.commons:commons-dbcp2:2.7.0'
+    // https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
+    compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
+
+    //spring-data
+    implementation('org.springframework.data:spring-data-jpa:2.3.1.RELEASE')
+    //javax-api base
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
     implementation 'com.sun.mail:javax.mail:1.6.2'
+
+    //spring framework
+    implementation 'org.springframework:spring-orm:5.2.2.RELEASE'
+    implementation 'org.springframework:spring-context:5.2.2.RELEASE'
+    implementation 'org.springframework:spring-context-support:5.2.2.RELEASE'
+    implementation 'org.springframework:spring-webmvc:5.2.2.RELEASE'
+
+    //spring security
+    implementation 'org.springframework.security:spring-security-web:5.2.2.RELEASE'
+    implementation 'org.springframework.security:spring-security-config:5.2.2.RELEASE'
+    implementation 'org.springframework.security:spring-security-acl:5.2.2.RELEASE'
+    implementation 'org.springframework.security:spring-security-test:5.2.2.RELEASE'
+
+    //json
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.10.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.0'
+
+    //jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.11.1'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.1'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.1'
-    implementation 'net.sf.ehcache:ehcache:2.10.6'
+
+    //apache commons utils
     implementation 'commons-net:commons-net:3.6'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-cache'
-    implementation 'org.springframework.security:spring-security-acl:5.2.2.RELEASE'
+
+    //jcl->slf4j->log4j
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+    implementation 'org.apache.logging.log4j:log4j-core:2.13.3'
+    //spring-data已经依赖
+//    implementation 'org.slf4j:slf4j-api:1.7.26'
+//    implementation 'org.slf4j:slf4j-log4j12:1.7.26'
+
+//    // https://mvnrepository.com/artifact/org.ehcache/ehcache
+//    compile group: 'org.ehcache', name: 'ehcache', version: '3.8.1'
+
+    // https://mvnrepository.com/artifact/net.sf.ehcache/ehcache
+    compile group: 'net.sf.ehcache', name: 'ehcache', version: '2.10.6'
+
+
+//    // https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core
+//    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.37'
+//// https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-el
+//    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-el', version: '9.0.37'
+
+//    implementation 'org.springframework.boot:spring-boot-starter-tomcat:2.2.0.RELEASE'
+
+}
+test {
+    useJUnitPlatform()
 }
