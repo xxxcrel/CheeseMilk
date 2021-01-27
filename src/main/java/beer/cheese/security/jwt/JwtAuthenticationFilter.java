@@ -67,7 +67,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            //tting request details eg: remote address..
+            //setting request details eg: remote address..
            setDetails(request, authentication);
 
             Authentication authResult = this.authenticationManager
