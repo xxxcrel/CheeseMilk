@@ -1,6 +1,5 @@
 package beer.cheese.controller.admin;
 
-import beer.cheese.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

@@ -59,8 +59,9 @@ public class MultiDataQueryController {
         LocalDateTime startDate = Optional.ofNullable(start).orElse(farPastDate);
 //        logger.error(startDate.toInstant(ZoneOffset.of("+8")).toEpochMilli());
         LocalDateTime endDate = Optional.ofNullable(end).orElse(LocalDateTime.now());
-        if (!endDate.isAfter(startDate))
+        if (!endDate.isAfter(startDate)) {
             throw new InvalidParameterException("end date time must be great than start date time, but start time: [" + startDate.toString() + "], after time: [" + endDate.toString() + "]");
+        }
         return new DateTuple(startDate, endDate);
     }
 

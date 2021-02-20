@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'io.freefair.lombok' version '5.3.0'
 }
 
 group 'beer.cheese'
@@ -23,6 +24,9 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.1'
 
     implementation 'net.sf.ehcache:ehcache:2.10.6'
+
+    implementation 'org.projectlombok:lombok:1.18.10'
+
     implementation 'commons-net:commons-net:3.6'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'

@@ -62,8 +62,9 @@ public class UserRegisterDTO {
             boolean result = false;
             if(this.verifyCode.equals(verifyCode)){
                 Duration duration = Duration.between(startTime, stopTime);
-                if(duration.toMillis() / 1000 < 60)
+                if(duration.toMillis() / 1000 < 60) {
                     result = true;
+                }
             }
             return result;
         }

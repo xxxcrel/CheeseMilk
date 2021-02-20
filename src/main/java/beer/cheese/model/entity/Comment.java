@@ -7,10 +7,17 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity(name = "Comment")
 @Table(name = "comment")
 @DynamicUpdate
 @DynamicInsert
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Comment {
     @Id
     @GeneratedValue
@@ -40,70 +47,4 @@ public class Comment {
     @ManyToOne
     private User user;
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Comment getParent() {
-        return parent;
-    }
-
-    public void setParent(Comment parent) {
-        this.parent = parent;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String review) {
-        this.content = review;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public int getStarCount() {
-        return starCount;
-    }
-
-    public void setStarCount(int starCount) {
-        this.starCount = starCount;
-    }
-
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public int getSubCommentCount() {
-        return subCommentCount;
-    }
-
-    public void setSubCommentCount(int subCommentCount) {
-        this.subCommentCount = subCommentCount;
-    }
 }
-
-
