@@ -1,13 +1,11 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
-apply plugin: 'java'
-apply plugin: 'io.spring.dependency-management'
-
 group 'beer.cheese'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 repositories {
     maven { url 'https://maven.aliyun.com/repository/central' }
@@ -19,16 +17,21 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.16'
     implementation 'org.apache.commons:commons-dbcp2:2.7.0'
     implementation 'com.sun.mail:javax.mail:1.6.2'
+
     implementation 'io.jsonwebtoken:jjwt-api:0.11.1'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.1'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.1'
+
     implementation 'net.sf.ehcache:ehcache:2.10.6'
     implementation 'commons-net:commons-net:3.6'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.security:spring-security-acl:5.2.2.RELEASE'
 }
