@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -29,7 +30,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity(name = "User")
-@Table(name = "user")
+@Table(name = "tbl_user")
 @DynamicInsert
 @DynamicUpdate
 @Transactional(transactionManager = "transactionManager")
@@ -45,18 +46,21 @@ public class User implements Serializable {
     private Long id;
 
     //eg:studentId, teacherId, staffId...
-    @Column(unique = true, nullable = false, updatable = false)
-    private String username;
+    @Column(name = "cheese_id", unique = true)
+    private String cheeseID;
 
-    @Column(nullable = false)
+    @Column(unique = true)
+    private String phone;
+
     private String password;
 
     private String nickname;
 
+    @Column(unique = true)
     private String email;
 
-    @Column(name = "avatar_url")
-    private String avatarUrl;
+    @OneToOne
+    private Image avatar;
 
     //eg:0793-江西上饶、0731-湖南长沙
     private String location = null;
@@ -95,30 +99,9 @@ public class User implements Serializable {
     private Set<Course> courses = new HashSet<>();
 
 
-    /***************************** spring security user details*************/
-
-    public User(String avatarUrl, String username, String password, String nickname,
-                String email, Integer gender, Date createdAt,
-                boolean accountNonExpired, boolean credentialsNonExpired,
-                boolean accountNonLocked, boolean enabled) {
-        this.avatarUrl = avatarUrl;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.nickname = nickname;
-        this.gender = gender;
-        this.enabled = enabled;
-    }
-
-    private boolean enabled;
-
-    public static UserBuilder builder() {
-        return new UserBuilder();
-    }
-
     @Override
     public boolean equals(Object o) {
-        return id.equals(((User) o).getId()) && username.equals(((User) o).getUsername());
+        return id.equals(((User) o).getId()) && cheeseID.equals(((User) o).getCheeseID());
     }
 
 }
