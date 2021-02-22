@@ -1,8 +1,14 @@
 package beer.cheese;
 
 import beer.cheese.constant.AppConstants;
+import beer.cheese.model.Category;
+import beer.cheese.model.Comment;
+import beer.cheese.model.Image;
+import beer.cheese.model.ManagerGroup;
+import beer.cheese.model.Post;
+import beer.cheese.model.Role;
+import beer.cheese.model.User;
 import beer.cheese.repository.*;
-import beer.cheese.model.entity.*;
 import beer.cheese.service.FileService;
 
 import org.springframework.beans.factory.annotation.Autowired;

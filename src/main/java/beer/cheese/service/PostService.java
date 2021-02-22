@@ -1,23 +1,14 @@
 package beer.cheese.service;
 
-import beer.cheese.constant.AppConstants;
-
 import static beer.cheese.controller.api.MultiDataQueryController.DateTuple;
 
-import beer.cheese.model.entity.*;
-import beer.cheese.repository.CategoryRepository;
-import beer.cheese.repository.PostRepository;
-import beer.cheese.repository.StarRepository;
-import beer.cheese.repository.UserRepository;
-import beer.cheese.exception.NotFoundException;
-import beer.cheese.model.dto.PostDTO;
-import beer.cheese.security.acl.AclDTO;
-import beer.cheese.security.acl.AclManager;
-import beer.cheese.view.vo.PostVO;
-import io.jsonwebtoken.lang.Assert;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -27,10 +18,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import beer.cheese.constant.AppConstants;
+import beer.cheese.exception.NotFoundException;
+import beer.cheese.model.Category;
+import beer.cheese.model.Image;
+import beer.cheese.model.Post;
+import beer.cheese.model.Star;
+import beer.cheese.model.User;
+import beer.cheese.repository.CategoryRepository;
+import beer.cheese.repository.PostRepository;
+import beer.cheese.repository.StarRepository;
+import beer.cheese.repository.UserRepository;
+import beer.cheese.security.acl.AclDTO;
+import beer.cheese.security.acl.AclManager;
+import beer.cheese.view.vo.PostVO;
+import io.jsonwebtoken.lang.Assert;
 
 @Service
 public class PostService {
@@ -57,24 +59,6 @@ public class PostService {
     @Autowired
     @Qualifier("jdkFileService")
     private FileService fileService;
-
-
-    /**
-     * 用来转换Post->PostVO
-     */
-    private static class CustomPostCopy {
-
-        public static PostVO apply(Post post) {
-            PostVO postVO = new PostVO();
-            BeanUtils.copyProperties(post, postVO, POST_TO_POSTVO_IGNORE);
-            postVO.setNickname(post.getUser().getNickname());
-            postVO.setAvatarUrl(post.getUser().getAvatarUrl());
-            postVO.setCategoryName(post.getCategory().getCategoryName());
-            postVO.setImageUrls(post.getImages().stream().map(Image::getImageUrl).collect(Collectors.toList()));
-            postVO.setCommentUrl(AppConstants.API_BASE_URL + "posts/" + post.getId() + "/comments");
-            return postVO;
-        }
-    }
 
 
     @Transactional
@@ -108,7 +92,7 @@ public class PostService {
     public Page<PostVO> listPostsByCategory(User user, String _category, DateTuple queryPeriod, Pageable pageable) {
         Category category = categoryRepository.findByCategoryName(_category).orElseThrow(() -> new NotFoundException("category: " + _category + " not found"));
         Page<Post> pagedPost = postRepository.getAllByCategoryAndCreatedAtAfterAndCreatedAtBefore(category, queryPeriod.start, queryPeriod.end, pageable);
-        if(user == null){
+        if (user == null) {
             return pagedPost.map(CustomPostCopy::apply);
         }
         return pagedPost.map(CustomPostCopy::apply).map(postVO -> {
@@ -155,7 +139,7 @@ public class PostService {
 
     @Transactional
     public void starPost(User currentUser, Long postId) {
-        Assert.notNull(currentUser,"user must be authenticated");
+        Assert.notNull(currentUser, "user must be authenticated");
         Assert.isTrue(postRepository.existsById(postId), "post id doesn't exist");
 
         Star star = new Star();
@@ -166,7 +150,7 @@ public class PostService {
 
     @Transactional
     public void unstarPost(User currentUser, Long postId) {
-        Assert.notNull(currentUser,"user must be authenticated");
+        Assert.notNull(currentUser, "user must be authenticated");
         Assert.isTrue(postRepository.existsById(postId), "post id doesn't exist");
 
         Star star = new Star();

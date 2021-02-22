@@ -1,7 +1,7 @@
 package beer.cheese.service;
 
 import beer.cheese.repository.CategoryRepository;
-import beer.cheese.model.entity.Category;
+import beer.cheese.model.Category;
 import beer.cheese.view.vo.CategoryVO;
 
 import org.springframework.beans.factory.annotation.Autowired;

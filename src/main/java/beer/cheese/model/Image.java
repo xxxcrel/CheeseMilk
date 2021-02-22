@@ -1,20 +1,20 @@
-package beer.cheese.model.entity;
+package beer.cheese.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "image")
-@Data
+@Table(name = "tbl_image")
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Image {
@@ -26,14 +26,7 @@ public class Image {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "thumbnailUrl")
+    @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 
-    @JoinColumn(name = "post_id")
-    @ManyToOne
-    private Post post;
-
-    public Image(String url) {
-        this.imageUrl = url;
-    }
 }

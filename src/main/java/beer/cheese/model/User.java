@@ -1,4 +1,4 @@
-package beer.cheese.model.entity;
+package beer.cheese.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -9,34 +9,48 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.transaction.annotation.Transactional;
 
-import beer.cheese.model.builders.UserBuilder;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "User")
 @Table(name = "tbl_user")
 @DynamicInsert
 @DynamicUpdate
-@Transactional(transactionManager = "transactionManager")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@NamedEntityGraphs(
+        value = {
+                @NamedEntityGraph(
+                        name = "User.postsFetchImages",
+                        attributeNodes = @NamedAttributeNode(value = "posts", subgraph = "User.postsFetchImages.images"),
+                        subgraphs = @NamedSubgraph(name = "User.postsFetchImages.images", attributeNodes = @NamedAttributeNode("images"))
+                ),
+                @NamedEntityGraph(
+                        name = "User.postsFetchAll",
+                        attributeNodes = @NamedAttributeNode(value = "posts", subgraph = "User.postsFetchAll.all"),
+                        subgraphs = @NamedSubgraph(name = "User.postsFetchAll.all", attributeNodes = {@NamedAttributeNode("images"), @NamedAttributeNode("comments")})
+                )
+        }
+)
 public class User implements Serializable {
 
     private static final long serialVersionUID = 749792921653839187L;
@@ -82,26 +96,11 @@ public class User implements Serializable {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "tbl_user_post")
     private Set<Post> posts = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "tbl_user_comment")
     private Set<Comment> comments = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private Set<Role> roles = new HashSet<>();
-
-    @ManyToMany(mappedBy = "members", fetch = FetchType.EAGER)
-    private Set<ManagerGroup> managerGroups = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
-    private Set<Course> courses = new HashSet<>();
-
-
-    @Override
-    public boolean equals(Object o) {
-        return id.equals(((User) o).getId()) && cheeseID.equals(((User) o).getCheeseID());
-    }
-
 }

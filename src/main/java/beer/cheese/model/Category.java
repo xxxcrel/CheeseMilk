@@ -1,4 +1,4 @@
-package beer.cheese.model.entity;
+package beer.cheese.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,18 +9,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "category")
-@Data
+@Table(name = "tbl_category")
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
@@ -37,9 +38,7 @@ public class Category {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "tbl_category_post")
     private Set<Post> posts = new HashSet<>();
-
-
 }

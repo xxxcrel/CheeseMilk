@@ -1,7 +1,7 @@
 package beer.cheese.controller.api;
 
 import beer.cheese.exception.InvalidParameterException;
-import beer.cheese.model.entity.User;
+import beer.cheese.model.User;
 import beer.cheese.security.CurrentUser;
 import beer.cheese.service.CommentService;
 import beer.cheese.service.PostService;

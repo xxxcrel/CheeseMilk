@@ -1,8 +1,8 @@
 package beer.cheese.repository;
 
-import beer.cheese.model.entity.Comment;
-import beer.cheese.model.entity.Post;
-import beer.cheese.model.entity.User;
+import beer.cheese.model.Comment;
+import beer.cheese.model.Post;
+import beer.cheese.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

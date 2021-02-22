@@ -1,21 +1,29 @@
-package beer.cheese.model.entity;
+package beer.cheese.model;
+
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "Comment")
-@Table(name = "comment")
+@Table(name = "tbl_comment")
 @DynamicUpdate
 @DynamicInsert
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Comment {
@@ -38,13 +46,4 @@ public class Comment {
 
     @Column(name = "sub_comment_count")
     private int subCommentCount = 0;
-
-    @JoinColumn(name = "post_id")
-    @ManyToOne
-    private Post post;
-
-    @JoinColumn(name = "user_id")
-    @ManyToOne
-    private User user;
-
 }

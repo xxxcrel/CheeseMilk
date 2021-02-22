@@ -1,7 +1,7 @@
 package beer.cheese.controller.api;
 
 
-import beer.cheese.model.entity.Category;
+import beer.cheese.model.Category;
 import beer.cheese.service.CategoryService;
 import beer.cheese.service.CommentService;
 import beer.cheese.service.PostService;

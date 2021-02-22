@@ -1,0 +1,27 @@
+server:
+  port: 5147
+  error:
+    include-exception: on
+spring:
+  datasource:
+    schema: classpath:createAclSchemaMySQL.sql
+    initialization-mode: always
+    sql-script-encoding: UTF-8
+    type: org.apache.commons.dbcp2.BasicDataSource
+  profiles:
+    active: dev
+  data:
+    jpa:
+      repositories:
+        enabled: true
+  jpa:
+    open-in-view: false
+    show-sql: true
+    generate-ddl: true
+  output:
+    ansi:
+      enabled: detect
+  mvc:
+    throw-exception-if-no-handler-found: true
+    locale: zh_CN
+

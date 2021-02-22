@@ -1,8 +1,8 @@
 package beer.cheese.security.jwt;
 
-import beer.cheese.model.entity.ManagerGroup;
-import beer.cheese.model.entity.Role;
-import beer.cheese.model.entity.User;
+import beer.cheese.model.ManagerGroup;
+import beer.cheese.model.Role;
+import beer.cheese.model.User;
 import beer.cheese.repository.UserRepository;
 import beer.cheese.util.JwtUtils;
 import io.jsonwebtoken.JwtException;
@@ -23,7 +23,6 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

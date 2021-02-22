@@ -1,4 +1,4 @@
-package beer.cheese.model.entity;
+package beer.cheese.model;
 
 
 import javax.persistence.*;

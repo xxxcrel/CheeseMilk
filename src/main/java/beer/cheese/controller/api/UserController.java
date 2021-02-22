@@ -1,45 +1,31 @@
 package beer.cheese.controller.api;
 
 import beer.cheese.constant.JwtConstants;
-import beer.cheese.exception.AlreadyExistsException;
 import beer.cheese.model.dto.CourseDTO;
 import beer.cheese.model.dto.PostDTO;
 import beer.cheese.model.dto.UserRegisterDTO;
 import beer.cheese.model.dto.UserUpdateDTO;
-import beer.cheese.model.entity.Star;
-import beer.cheese.model.entity.User;
+import beer.cheese.model.User;
 import beer.cheese.repository.StarRepository;
 import beer.cheese.security.CurrentUser;
 import beer.cheese.service.*;
-import beer.cheese.util.VerifyCodeGenerator;
 import beer.cheese.view.Result;
-import beer.cheese.view.vo.PostVO;
 import beer.cheese.view.vo.UserVO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.io.IOException;
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 import static beer.cheese.model.dto.UserRegisterDTO.VerifyDTO;

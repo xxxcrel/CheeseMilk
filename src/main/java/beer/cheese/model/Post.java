@@ -1,4 +1,4 @@
-package beer.cheese.model.entity;
+package beer.cheese.model;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -11,26 +11,34 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import beer.cheese.model.builders.PostBuilder;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "Post")
-@Table(name = "post")
+@Table(name = "tbl_post")
 @DynamicUpdate
 @DynamicInsert
-@Data
-@AllArgsConstructor
+//@Data
+//@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@NamedEntityGraph(
+        name = "Post.details",
+        attributeNodes = {
+                @NamedAttributeNode("images"),
+        }
+)
 public class Post {
 
     @Id
@@ -47,29 +55,17 @@ public class Post {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Image> images = new HashSet<>();
-
     @Column(name = "star_count")
     private Integer starCount = 0;
 
     @Column(name = "comment_count")
     private Integer commentCount = 0;
 
-    @JoinColumn(name = "category_id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Category category;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "tbl_post_image")
+    private Set<Image> images = new HashSet<>();
 
-    @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User user;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "tbl_post_comment")
     private Set<Comment> comments = new HashSet<>();
-
-
-    public static PostBuilder builder() {
-        return new PostBuilder();
-    }
 }
-

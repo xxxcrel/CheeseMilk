@@ -1,18 +1,16 @@
 package beer.cheese.repository;
 
-import beer.cheese.model.entity.Category;
-import beer.cheese.model.entity.Post;
-import beer.cheese.model.entity.User;
+import beer.cheese.model.Category;
+import beer.cheese.model.Post;
+import beer.cheese.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
