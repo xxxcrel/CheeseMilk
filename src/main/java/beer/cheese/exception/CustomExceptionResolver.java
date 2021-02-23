@@ -15,6 +15,10 @@ public class CustomExceptionResolver {
 
     private final Log logger = LogFactory.getLog(getClass());
 
+    @ExceptionHandler(BaseException.class)
+    public Result handleBaseException(BaseException e){
+        return Result.error(e.status, e.getData());
+    }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)

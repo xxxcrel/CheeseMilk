@@ -2,41 +2,48 @@ package beer.cheese.view;
 
 import org.springframework.http.HttpStatus;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class Result<T> {
 
-    private int status;
+    private int code;
+
+    private String message;
 
     private T data;
 
-    public Result(T data){
+    public Result(ResultStatus status, T data){
+        this.code = status.getCode();
+        this.message = status.getMessage();
+        this.data = data;
+    }
+    public Result(int code, String message, T data){
+        this.code = code;
+        this.message = message;
         this.data = data;
     }
 
-    public int getStatus() {
-        return status;
+    public Result(ResultStatus status){
+        this.code = status.getCode();
+        this.message = status.getMessage();
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public Result(int code, String message){
+        this.code = code;
+        this.message = message;
     }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
     public static <T> Result<T> ok(T data){
-        Result<T> result = new Result<>(data);
-        result.setStatus(HttpStatus.OK.value());
-        return result;
+        return new Result<>(ResultStatus.SUCCESS, data);
     }
 
-    public static <T> Result<T> notFound(T data){
-        Result<T> result = new Result<>(data);
-        result.setStatus(HttpStatus.NOT_FOUND.value());
-        return result;
+    public static <T> Result<T> error(T data){
+        return new Result<>(ResultStatus.ERROR, data);
+    }
+
+    public static <T> Result<T> error(ResultStatus status, T data){
+        return new Result<>(status, data);
     }
 }
