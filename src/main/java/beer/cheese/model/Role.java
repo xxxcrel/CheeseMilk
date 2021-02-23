@@ -28,7 +28,5 @@ public class Role {
 
     private String desc;
 
-    @OneToMany
-    private Set<Permission> permissions = new HashSet<>();
-
+    private int permissions;
 }

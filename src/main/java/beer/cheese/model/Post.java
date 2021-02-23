@@ -29,8 +29,6 @@ import lombok.Setter;
 @Table(name = "tbl_post")
 @DynamicUpdate
 @DynamicInsert
-//@Data
-//@AllArgsConstructor
 @Getter
 @Setter
 @NoArgsConstructor
@@ -64,6 +62,8 @@ public class Post {
 
     @Column(name = "comment_count")
     private Integer commentCount = 0;
+
+    private boolean publicState;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "tbl_post_image")

@@ -7,6 +7,7 @@ import beer.cheese.view.vo.CategoryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,5 +22,6 @@ public class CategoryService {
 
     public void addCategory(CategoryVO categoryVO) {
 
+        BasePermission
     }
 }

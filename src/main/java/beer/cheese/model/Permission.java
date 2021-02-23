@@ -1,23 +1,9 @@
 package beer.cheese.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Entity
-@Table(name = "tbl_permission")
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Permission {
-
-    @Id
-    private Long id;
-
+    public static int READ = 1 << 0;
+    public static int WRITE = 1 << 1;
+    public static int CREATE = 1 << 2;
+    public static int DELETE = 1 << 3;
+    public static int ADMIN = 1 << 4;
 }
