@@ -23,7 +23,6 @@ import beer.cheese.exception.NotFoundException;
 import beer.cheese.model.Category;
 import beer.cheese.model.Image;
 import beer.cheese.model.Post;
-import beer.cheese.model.Star;
 import beer.cheese.model.User;
 import beer.cheese.repository.CategoryRepository;
 import beer.cheese.repository.PostRepository;

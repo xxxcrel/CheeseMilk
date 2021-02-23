@@ -1,16 +1,11 @@
 package beer.cheese.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -38,7 +33,6 @@ public class Category {
     @Column(name = "avatar_url")
     private String avatarUrl;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "tbl_category_post")
-    private Set<Post> posts = new HashSet<>();
+    @OneToOne
+    private ManagerGroup managerGroup;
 }

@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
@@ -74,6 +75,7 @@ public class User implements Serializable {
     private String email;
 
     @OneToOne
+    @JoinColumn(name = "avatar_id")
     private Image avatar;
 
     //eg:0793-江西上饶、0731-湖南长沙

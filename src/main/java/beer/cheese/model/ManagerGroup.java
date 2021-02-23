@@ -1,57 +1,34 @@
 package beer.cheese.model;
 
-import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
-@Table(name = "manager_group")
+@Table(name = "tbl_manager_group")
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ManagerGroup {
 
     @Id
-    @GeneratedValue
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "ower_id")
     private User owner;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @OneToMany
+    private Set<AuthorityUser> members = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "group_user", joinColumns = {@JoinColumn(name = "group_id")}, inverseJoinColumns = {@JoinColumn(name = "user_id")})
-    private Set<User> members;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Set<User> getMembers() {
-        return members;
-    }
-
-    public void setMembers(Set<User> members) {
-        this.members = members;
-    }
 }

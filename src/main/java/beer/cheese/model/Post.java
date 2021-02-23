@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
@@ -51,6 +52,9 @@ public class Post {
      * 标签，使用逗号分开
      */
     private String tags;
+
+    @ManyToOne
+    private Category category;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

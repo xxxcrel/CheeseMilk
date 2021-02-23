@@ -7,7 +7,6 @@ import beer.cheese.exception.NotFoundException;
 import beer.cheese.model.dto.CommentDTO;
 import beer.cheese.model.Comment;
 import beer.cheese.model.Post;
-import beer.cheese.model.Star;
 import beer.cheese.model.User;
 import beer.cheese.repository.CommentRepository;
 import beer.cheese.repository.PostRepository;
