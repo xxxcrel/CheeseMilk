@@ -16,7 +16,7 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    testImplementation 'com.h2database:h2:1.4.200'
+    implementation 'com.h2database:h2:1.4.200'
 
     implementation 'mysql:mysql-connector-java:8.0.16'
     implementation 'org.apache.commons:commons-dbcp2:2.7.0'
@@ -32,7 +32,7 @@ dependencies {
 
     implementation 'commons-net:commons-net:3.6'
 
-    implementation 'io.vertx:vertx-web:4.0.3'
-
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
 }

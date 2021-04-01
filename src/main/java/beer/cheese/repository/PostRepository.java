@@ -16,8 +16,6 @@ import beer.cheese.model.User;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    Page<Post> getAllByUserAndCreatedAtAfterAndCreatedAtBefore(User user, LocalDateTime start, LocalDateTime end, Pageable pageable);
-
     Page<Post> getAllByCategory(Category category, Pageable pageable);
 
     Page<Post> getAllByCategoryAndCreatedAtAfterAndCreatedAtBefore(Category category, LocalDateTime start, LocalDateTime end, Pageable pageable);
@@ -30,13 +28,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("update Post p set p.starCount = p.starCount + :increment where p.id = :pid")
     void updateStars(@Param("pid") Long pid, @Param("increment") int increment);
 
-    @EntityGraph(attributePaths = {"posts"}, type = EntityGraph.EntityGraphType.FETCH)
-    User findByNickname(String nickname);
 
-    @EntityGraph("User.postsFetchAll")
-    @Query("select u from User u where u.nickname = :nickname")
-    User fetchAllByNickname(@Param("nickname") String nickname);
-
-    @EntityGraph("User.postsFetchImages")
-    User getByNickname(String nickname);
 }

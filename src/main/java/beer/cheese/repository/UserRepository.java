@@ -1,6 +1,8 @@
 package beer.cheese.repository;
 
 import beer.cheese.model.User;
+
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,8 +13,6 @@ import java.util.Date;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
-
-    Optional<User> findByUsername(String username);
 
     Optional<User> findByEmail(String email);
 
@@ -37,8 +37,13 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     @Query("update User u set u.gender = :gender where u.id = :uid")
     int updateGender(@Param("uid") Long uid, @Param("gender") Integer gender);
 
-    @Modifying
-    @Query("update User u set u.avatarUrl = :avatarUrl where u.id = :uid")
-    int updateAvatarUrl(@Param("uid") Long uid, @Param("avatarUrl")String avatarUrl);
+    @EntityGraph(attributePaths = {"posts"}, type = EntityGraph.EntityGraphType.FETCH)
+    User findByNickname(String nickname);
 
+    @EntityGraph("User.postsFetchAll")
+    @Query("select u from User u where u.nickname = :nickname")
+    User fetchAllByNickname(@Param("nickname") String nickname);
+
+    @EntityGraph("User.postsFetchImages")
+    User getByNickname(String nickname);
 }

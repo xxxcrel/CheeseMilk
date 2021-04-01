@@ -4,9 +4,6 @@ server:
     include-exception: on
 spring:
   datasource:
-    schema: classpath:createAclSchemaMySQL.sql
-    initialization-mode: always
-    sql-script-encoding: UTF-8
     type: org.apache.commons.dbcp2.BasicDataSource
   profiles:
     active: dev
