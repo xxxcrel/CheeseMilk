@@ -1,4 +1,4 @@
-package beer.cheese.controller.api;
+package beer.cheese.web.api;
 
 import org.springframework.web.bind.annotation.RestController;
 

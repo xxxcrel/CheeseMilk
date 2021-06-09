@@ -1,11 +1,11 @@
-package beer.cheese.controller.api;
+package beer.cheese.web.api;
 
 import beer.cheese.constant.JwtConstants;
-import beer.cheese.model.dto.CourseDTO;
-import beer.cheese.model.dto.PostDTO;
-import beer.cheese.model.dto.UserRegisterDTO;
-import beer.cheese.model.dto.UserUpdateDTO;
-import beer.cheese.model.User;
+import beer.cheese.entity.dto.CourseDTO;
+import beer.cheese.entity.dto.PostDTO;
+import beer.cheese.entity.dto.UserRegisterDTO;
+import beer.cheese.entity.dto.UserUpdateDTO;
+import beer.cheese.entity.User;
 import beer.cheese.repository.StarRepository;
 import beer.cheese.security.CurrentUser;
 import beer.cheese.service.*;
@@ -28,7 +28,7 @@ import javax.validation.constraints.NotEmpty;
 
 import java.util.List;
 
-import static beer.cheese.model.dto.UserRegisterDTO.VerifyDTO;
+import static beer.cheese.entity.dto.UserRegisterDTO.VerifyDTO;
 
 @RestController
 @RequestMapping

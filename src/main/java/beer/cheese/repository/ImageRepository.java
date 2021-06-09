@@ -1,6 +1,6 @@
 package beer.cheese.repository;
 
-import beer.cheese.model.Image;
+import beer.cheese.entity.Image;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.util.Streamable;
 

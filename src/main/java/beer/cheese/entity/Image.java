@@ -1,8 +1,9 @@
-package beer.cheese.model;
+package beer.cheese.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -11,20 +12,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tbl_authority_user")
+@Table(name = "tbl_image")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthorityUser {
+public class Image {
 
     @Id
+    @GeneratedValue
     private Long id;
 
-    @OneToOne
-    private User user;
+    @Column(name = "image_url")
+    private String imageUrl;
 
-    @OneToOne
-    private Role role;
+    @Column(name = "thumbnail_url")
+    private String thumbnailUrl;
 
 }

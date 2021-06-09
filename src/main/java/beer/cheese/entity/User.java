@@ -1,4 +1,4 @@
-package beer.cheese.model;
+package beer.cheese.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -9,6 +9,9 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,6 +27,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -52,6 +58,7 @@ import lombok.Setter;
                 )
         }
 )
+@EntityListeners(AuditingEntityListener.class)
 public class User implements Serializable {
 
     private static final long serialVersionUID = 749792921653839187L;
@@ -71,6 +78,12 @@ public class User implements Serializable {
 
     private String nickname;
 
+    @Enumerated(EnumType.ORDINAL)
+    private UserType type;
+
+    @Enumerated(EnumType.ORDINAL)
+    private UserStatus status;
+
     @Column(unique = true)
     private String email;
 
@@ -83,19 +96,17 @@ public class User implements Serializable {
 
     private String bio;
 
-    private Date birth;
+    private LocalDateTime birth;
 
     //0-male, 1-female
     private Integer gender;
 
-    //如果type是student，采用.分隔（eg:0.17.12.2代表本科17级软件工程2班）
-    @Column(name = "student_attr", nullable = true)
-    private String studentAttr;
-
     @Column(name = "created_at")
+    @CreatedDate
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -105,4 +116,11 @@ public class User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "tbl_user_comment")
     private Set<Comment> comments = new HashSet<>();
+
+    public enum UserType{
+        STUDENT, TEACHER, STAFF
+    }
+    public enum UserStatus{
+        ENABLE, OFFLINE, ONLINE, DISABLED, ACCOUNT_LOCKED
+    }
 }

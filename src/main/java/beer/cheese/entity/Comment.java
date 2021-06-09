@@ -1,4 +1,4 @@
-package beer.cheese.model;
+package beer.cheese.entity;
 
 import java.time.LocalDateTime;
 

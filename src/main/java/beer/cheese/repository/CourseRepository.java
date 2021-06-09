@@ -1,7 +1,7 @@
 package beer.cheese.repository;
 
-import beer.cheese.model.Course;
-import beer.cheese.model.User;
+import beer.cheese.entity.Course;
+import beer.cheese.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 

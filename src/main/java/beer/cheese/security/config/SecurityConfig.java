@@ -1,13 +1,11 @@
 package beer.cheese.security.config;
 
 import beer.cheese.repository.UserRepository;
-import beer.cheese.security.JsonAccessDeniedHandler;
-import beer.cheese.security.SettingCharacterSetFilter;
-import beer.cheese.security.jwt.JwtAuthenticationEntryPoint;
-import beer.cheese.security.jwt.JwtAuthenticationFilter;
-import beer.cheese.security.jwt.JwtAuthenticationProvider;
+import beer.cheese.security.MixedAuthenticationProvider;
+import beer.cheese.security.restful.RestApiAuthenticationEntryPoint;
+import beer.cheese.security.restful.RestApiAuthenticationFilter;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -26,11 +25,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @EnableWebSecurity(debug = true)
 @Configuration
 @ComponentScan(basePackages = "beer.cheese.security")
 @Import({AclConfig.class})
+@EnableRedisHttpSession
 @EnableCaching
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -45,7 +46,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(jwtAuthenticationProvider());
+        auth.authenticationProvider(mixedAuthenticationProvider());
+    }
+
+    @Bean
+    public AuthenticationProvider mixedAuthenticationProvider(){
+        return new MixedAuthenticationProvider();
     }
 
     @Bean
@@ -79,13 +85,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/posts/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new SettingCharacterSetFilter(), WebAsyncManagerIntegrationFilter.class)
 //                .addFilterAfter(new DebugFilter(), SettingCharacterSetFilter.class)
 //                .addFilterBefore(new DelegatingFilterProxy(WebMvcConfig.ERROR_PAGE_FILTER_NAME), WebAsyncManagerIntegrationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter(), ExceptionTranslationFilter.class)
                 .exceptionHandling()
-                    .accessDeniedHandler(new JsonAccessDeniedHandler())
-                    .authenticationEntryPoint(new JwtAuthenticationEntryPoint());
+                    .authenticationEntryPoint(new RestApiAuthenticationEntryPoint());
 //                .httpBasic().authenticationEntryPoint(new BasicAuthenticationEntryPoint());
     }
 
@@ -96,16 +100,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
+    public RestApiAuthenticationFilter jwtAuthenticationFilter() {
+        return new RestApiAuthenticationFilter();
     }
 
-    @Bean
-    public JwtAuthenticationProvider jwtAuthenticationProvider() {
-        JwtAuthenticationProvider provider = new JwtAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder);
-        provider.setUserCache(cacheManager.getCache("userCache"));
-        provider.setUserRepository(userRepository);
-        return provider;
-    }
 }

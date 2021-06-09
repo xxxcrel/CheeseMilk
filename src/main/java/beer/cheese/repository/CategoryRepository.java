@@ -1,6 +1,6 @@
 package beer.cheese.repository;
 
-import beer.cheese.model.Category;
+import beer.cheese.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

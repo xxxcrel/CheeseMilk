@@ -1,11 +1,7 @@
-package beer.cheese.model;
-
-import java.util.HashSet;
-import java.util.Set;
+package beer.cheese.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -15,20 +11,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tbl_manager_group")
+@Table(name = "tbl_authority_user")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ManagerGroup {
+public class AuthorityUser {
 
     @Id
     private Long id;
 
     @OneToOne
-    private User owner;
+    private User user;
 
-    @OneToMany
-    private Set<AuthorityUser> members = new HashSet<>();
+    @OneToOne
+    private Role role;
 
 }

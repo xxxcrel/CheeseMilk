@@ -1,13 +1,13 @@
 package beer.cheese;
 
 import beer.cheese.constant.AppConstants;
-import beer.cheese.model.Category;
-import beer.cheese.model.Comment;
-import beer.cheese.model.Image;
-import beer.cheese.model.ManagerGroup;
-import beer.cheese.model.Post;
-import beer.cheese.model.Role;
-import beer.cheese.model.User;
+import beer.cheese.entity.Category;
+import beer.cheese.entity.Comment;
+import beer.cheese.entity.Image;
+import beer.cheese.entity.ManagerGroup;
+import beer.cheese.entity.Post;
+import beer.cheese.entity.Role;
+import beer.cheese.entity.User;
 import beer.cheese.repository.*;
 import beer.cheese.service.FileService;
 

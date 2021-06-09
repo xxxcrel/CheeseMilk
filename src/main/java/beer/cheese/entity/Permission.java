@@ -1,4 +1,4 @@
-package beer.cheese.model;
+package beer.cheese.entity;
 
 public class Permission {
     public static int READ = 1 << 0;

@@ -1,6 +1,6 @@
 package beer.cheese.service;
 
-import static beer.cheese.controller.api.MultiDataQueryController.DateTuple;
+import static beer.cheese.web.api.MultiDataQueryController.DateTuple;
 
 import java.util.HashSet;
 import java.util.List;
@@ -20,10 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import beer.cheese.constant.AppConstants;
 import beer.cheese.exception.NotFoundException;
-import beer.cheese.model.Category;
-import beer.cheese.model.Image;
-import beer.cheese.model.Post;
-import beer.cheese.model.User;
+import beer.cheese.entity.Category;
+import beer.cheese.entity.Image;
+import beer.cheese.entity.Post;
+import beer.cheese.entity.User;
 import beer.cheese.repository.CategoryRepository;
 import beer.cheese.repository.PostRepository;
 import beer.cheese.repository.StarRepository;

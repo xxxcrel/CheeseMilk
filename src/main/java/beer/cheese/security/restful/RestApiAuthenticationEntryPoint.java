@@ -1,4 +1,4 @@
-package beer.cheese.security.jwt;
+package beer.cheese.security.restful;
 
 import beer.cheese.view.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,17 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class RestApiAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private final Log logger = LogFactory.getLog(getClass());
     private String realmName = "Bearer";
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         logger.info("authenticate failure, provider: jwtProvider");
-        response.addHeader("WWW-Authenticate", "Basic realm=\"" + realmName + "\"");
-        ObjectMapper mapper = new ObjectMapper();
 //        response.setStatus(HttpStatus.UNAUTHORIZED.value());//
-        mapper.writerWithDefaultPrettyPrinter().writeValue(response.getWriter(), new Result<>("Requires Authentication"));
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
     }
 
     public String getRealmName() {

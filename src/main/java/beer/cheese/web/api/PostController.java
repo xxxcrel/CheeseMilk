@@ -1,4 +1,4 @@
-package beer.cheese.controller.api;
+package beer.cheese.web.api;
 
 import java.util.List;
 import java.util.Map;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import beer.cheese.model.User;
-import beer.cheese.model.dto.CommentDTO;
+import beer.cheese.entity.User;
+import beer.cheese.entity.dto.CommentDTO;
 import beer.cheese.security.CurrentUser;
 import beer.cheese.service.CommentService;
 import beer.cheese.service.PostService;

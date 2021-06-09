@@ -2,10 +2,10 @@ package beer.cheese.service;
 
 import beer.cheese.constant.AppConstants;
 import beer.cheese.exception.UploadFailureException;
-import beer.cheese.model.dto.CourseDTO;
-import beer.cheese.model.dto.UserRegisterDTO;
-import beer.cheese.model.Course;
-import beer.cheese.model.User;
+import beer.cheese.entity.dto.CourseDTO;
+import beer.cheese.entity.dto.UserRegisterDTO;
+import beer.cheese.entity.Course;
+import beer.cheese.entity.User;
 import beer.cheese.repository.*;
 import beer.cheese.security.acl.AclDTO;
 import beer.cheese.security.acl.AclManager;

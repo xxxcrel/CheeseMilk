@@ -10,9 +10,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import beer.cheese.model.Category;
-import beer.cheese.model.Post;
-import beer.cheese.model.User;
+import beer.cheese.entity.Category;
+import beer.cheese.entity.Post;
+import beer.cheese.entity.User;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 

@@ -1,8 +1,6 @@
-package beer.cheese.model;
+package beer.cheese.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -12,21 +10,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tbl_image")
+@Table(name = "tbl_role")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image {
+public class Role {
 
     @Id
-    @GeneratedValue
     private Long id;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    private String name;
 
-    @Column(name = "thumbnail_url")
-    private String thumbnailUrl;
+    private String desc;
 
+    private int permissions;
 }

@@ -1,13 +1,13 @@
 package beer.cheese.service;
 
 
-import static beer.cheese.controller.api.MultiDataQueryController.DateTuple;
+import static beer.cheese.web.api.MultiDataQueryController.DateTuple;
 
 import beer.cheese.exception.NotFoundException;
-import beer.cheese.model.dto.CommentDTO;
-import beer.cheese.model.Comment;
-import beer.cheese.model.Post;
-import beer.cheese.model.User;
+import beer.cheese.entity.dto.CommentDTO;
+import beer.cheese.entity.Comment;
+import beer.cheese.entity.Post;
+import beer.cheese.entity.User;
 import beer.cheese.repository.CommentRepository;
 import beer.cheese.repository.PostRepository;
 import beer.cheese.repository.StarRepository;
