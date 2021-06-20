@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.2.2.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'org.springframework.boot' version '2.5.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'io.freefair.lombok' version '5.3.0'
 }
 
@@ -13,8 +13,14 @@ repositories {
     maven { url 'https://maven.aliyun.com/repository/public' }
 }
 
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.session:spring-session-bom:2020.0.3'
+    }
+}
+
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
 
     testImplementation 'com.h2database:h2:1.4.200'
 
@@ -32,13 +38,20 @@ dependencies {
 
     implementation 'commons-net:commons-net:3.6'
 
+    //Spring Web base
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    //Spring Data
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    //Mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    //Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    //Cache
     implementation 'org.springframework.boot:spring-boot-starter-cache'
-
+    //Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.security:spring-security-acl:5.2.2.RELEASE'
+    //Spring Session
+    implementation 'org.springframework.session:spring-session-data-redis'
 }
