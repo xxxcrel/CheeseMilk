@@ -24,4 +24,3 @@ spring:
   mvc:
     throw-exception-if-no-handler-found: true
     locale: zh_CN
-
